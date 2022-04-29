@@ -25,3 +25,16 @@ R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\obj\Debug\
 R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\obj\Debug\net6.0\ref\TimetableAPI.dll
 R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\obj\Debug\net6.0\TimetableAPI.pdb
 R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\obj\Debug\net6.0\TimetableAPI.genruntimeconfig.cache
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\AutoMapper.dll
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\Humanizer.dll
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\MailKit.dll
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\MimeKit.dll
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\MySqlConnector.dll
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.dll
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\BouncyCastle.Crypto.dll
