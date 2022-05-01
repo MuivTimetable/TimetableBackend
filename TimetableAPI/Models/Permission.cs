@@ -3,7 +3,7 @@
     public class Permission
     {
         [Key]
-        public int MyProperty { get; set; }
+        public int Permission_id { get; set; }
 
         [Required]
         public string Permission_name { get; set; }
