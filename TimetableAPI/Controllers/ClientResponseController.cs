@@ -7,5 +7,6 @@ namespace TimetableAPI.Controllers
     [ApiController]
     public class ClientResponseController : ControllerBase
     {
+
     }
 }
