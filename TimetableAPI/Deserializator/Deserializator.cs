@@ -37,6 +37,13 @@ namespace TimetableAPI.Deserializator
 
     public class Deserializator
     {
+        public static void shedulerDeserializator()
+        {
+            string? _filePath = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+            string _fileName = "/shedulerData.json";
+            string jsonString = File.ReadAllText(_filePath + "/sheduler" + _fileName);
 
+            Sheduler? sheduler = JsonSerializer.Deserialize<Sheduler>(jsonString);
+        }
     }
 }
