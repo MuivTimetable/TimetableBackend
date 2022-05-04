@@ -1,9 +1,18 @@
-﻿namespace TimetableAPI.Repos
+﻿using TimetableAPI.Dtos;
+
+namespace TimetableAPI.Repos
 {
     public interface IClientResponceRepo
     {
         bool SaveChanges();
 
-        //TODO: Добавить все виды передаваемой инфы
+        UserAutoAnswerDto AutoriseUser(string Login, string Password);
+
+        //void SendAutoEmail();
+
+        //void AutoriseUser();
+
+        //void AutoriseUser();
+
     }
 }

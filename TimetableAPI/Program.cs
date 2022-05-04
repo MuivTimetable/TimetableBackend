@@ -1,13 +1,19 @@
+using TimetableAPI.Repos;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 
+builder.Services.AddScoped<IClientResponceRepo, ClientResponceRepo>();
 
-//TODO: добавить остальные сервисы
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
+//TODO: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+
+builder.Services.AddOptions();
 
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

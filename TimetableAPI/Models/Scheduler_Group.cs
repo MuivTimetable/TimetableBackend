@@ -2,6 +2,7 @@
 {
     public class Scheduler_Group
     {
+        [Key]
         public int Scheduler_id { get; set; }
 
         [ForeignKey("Scheduler_id")]

@@ -14,7 +14,7 @@
         [Required]
         public string Password { get; set; }
 
-        [Required]
+        [Required, EmailAddress]
         public string Email { get; set; }
 
         public int? Group_id { get; set; }

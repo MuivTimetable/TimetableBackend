@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "1bf25987-aaac-4056-9a45-516676ec14c8": {
+      "ProjectGuid": "1bf25987-aaac-4056-9a45-516676ec14c8",
+      "DisplayName": "TimetableAPI",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
