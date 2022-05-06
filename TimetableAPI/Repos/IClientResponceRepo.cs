@@ -6,13 +6,18 @@ namespace TimetableAPI.Repos
     {
         bool SaveChanges();
 
-        UserAutoAnswerDto AutoriseUser(string Login, string Password);
+        UserAutoAnswerDto AutoriseUser(UserAutoRequestDto request);
 
-        //void SendAutoEmail();
+        void EmailCodeAuto();
 
-        //void AutoriseUser();
+        //TODO: понять как и что правильно передавать
+        IEnumerable<Scheduler> GetSchedulers();
 
-        //void AutoriseUser();
+        void PostComment(CommentCreateDto comment);
+
+        void TotalizerClick(TotalizerUpdateDto totalizer);
+
+        IEnumerable<Group> GetGroups();
 
     }
 }

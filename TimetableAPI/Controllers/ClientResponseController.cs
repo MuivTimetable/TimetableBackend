@@ -24,8 +24,16 @@ namespace TimetableAPI.Controllers
         [HttpPost]
         public ActionResult<UserAutoAnswerDto> AutoriseUser(UserAutoRequestDto userAutoRequestDto)
         {
-            var item = _repository.AutoriseUser(userAutoRequestDto.Login, userAutoRequestDto.Password);
+            var item = _repository.AutoriseUser(userAutoRequestDto);
             return Ok(item);
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Group>> GetGroups()
+        {
+            var item = _repository.GetGroups();
+
+            return Ok(_mapper.Map<IEnumerable<GroupReadDto>>(item));
         }
     }
 }

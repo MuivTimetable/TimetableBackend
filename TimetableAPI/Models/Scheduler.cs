@@ -8,13 +8,18 @@ namespace TimetableAPI.Models
         public int Scheduler_id { get; set; }
 
         [Required]
+        public int Day_id { get; set; }
+
+        [Required]
+        public int Group_id { get; set; }
+
+        [Required]
         public string Work_start { get; set; }
 
         [Required]
         public string Work_end { get; set; }
 
-        [Required]
-        public string Area { get; set; }
+        public string? Area { get; set; }
 
         public string? Work_type { get; set; }
 
@@ -24,17 +29,14 @@ namespace TimetableAPI.Models
 
         public string? Cathedra { get; set; }
 
-        [Required]
-        public int Group_id { get; set; }
-
         public string? Comment { get; set; }
 
         public int Totalizer { get; set; }
 
-        [Required]
-        public int Day_id { get; set; }
-
         [ForeignKey("Day_id")]
         public SchedulerDate SchedulerDate { get; set; }
+
+        [ForeignKey("Group_id")]
+        public Group Group { get; set; }
     }
 }

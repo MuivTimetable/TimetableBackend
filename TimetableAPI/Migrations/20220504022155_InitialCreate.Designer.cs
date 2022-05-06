@@ -11,7 +11,7 @@ using TimetableAPI;
 namespace TimetableAPI.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220504004858_InitialCreate")]
+    [Migration("20220504022155_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,7 +45,8 @@ namespace TimetableAPI.Migrations
 
                     b.Property<string>("Permission_name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.HasKey("Permission_id");
 
@@ -81,7 +82,6 @@ namespace TimetableAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Area")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Cathedra")
@@ -119,6 +119,8 @@ namespace TimetableAPI.Migrations
                     b.HasKey("Scheduler_id");
 
                     b.HasIndex("Day_id");
+
+                    b.HasIndex("Group_id");
 
                     b.ToTable("Schedulers");
                 });
@@ -205,6 +207,14 @@ namespace TimetableAPI.Migrations
                         .HasForeignKey("Day_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("TimetableAPI.Models.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("Group_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
 
                     b.Navigation("SchedulerDate");
                 });

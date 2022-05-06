@@ -5,7 +5,7 @@
         [Key]
         public int Permission_id { get; set; }
 
-        [Required]
+        [Required,MaxLength(20)]
         public string Permission_name { get; set; }
     }
 }
