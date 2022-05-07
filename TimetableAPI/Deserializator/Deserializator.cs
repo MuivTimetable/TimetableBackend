@@ -10,6 +10,7 @@ namespace TimetableAPI.Deserializator
 
     public class Sheduler
     {
+        public string? branch { get; set; }
         public int workYear { get; set; }
         public int workMonth { get; set; }
         public int workDate { get; set; }
