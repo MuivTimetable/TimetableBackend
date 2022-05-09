@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-
+using Newtonsoft.Json;
 namespace TimetableAPI.Deserializator
 {
     //all of this next is the Sheduler json model
@@ -52,32 +52,36 @@ namespace TimetableAPI.Deserializator
     //module of Deserialization
     public class Deserializator
     {
-        public static void shedulerDeserializator()
+        public void shedulerDeserializator()
         {
             
             string? _debugPath = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
 
-            string nameAndDateJsonString = File.ReadAllText(_debugPath + "/NameAndDate/Nameanddate.json");
-            Nameanddate? nameAndDate = JsonSerializer.Deserialize<Nameanddate>(nameAndDateJsonString);
+            string nameAndDateJsonString = _debugPath + "\\NameAndDate\\Nameanddate.json";
+            var nameAndDate =JsonConvert.DeserializeObject<Rootnameanddate>(File.ReadAllText(nameAndDateJsonString));
 
             DirectoryInfo _dirPath = new DirectoryInfo(_debugPath + "/sheduler");
 
-            foreach (FileInfo _fileName in _dirPath.GetFiles()) 
+            foreach (FileInfo _file in _dirPath.GetFiles()) 
             {
-                string lastWriteTime = _fileName.LastWriteTime.ToString();
-                if (_fileName.Name == nameAndDate.name) {
-                    if (lastWriteTime != nameAndDate.date) 
-                    {
-                        //тута идёт обновление БД
-                        string jsonString = File.ReadAllText(_debugPath + "/sheduler" + _fileName.Name);
-                        Sheduler? sheduler = JsonSerializer.Deserialize<Sheduler>(jsonString);
-                    }
-                }
-                else
+                string lastWriteTime = _file.LastWriteTime.ToString();
+                for (int i = 0; i < nameAndDate.) 
                 {
-                    //тута заполняется БД как и надо
-                    string jsonString = File.ReadAllText(_debugPath + "/sheduler" + _fileName.Name);
-                    Sheduler? sheduler = JsonSerializer.Deserialize<Sheduler>(jsonString);
+                    if (_file.Name == nameAndDate.) 
+                    {
+                        if (lastWriteTime != nameAndDate.)
+                        {
+                            //тута идёт обновление БД
+                            string jsonString = File.ReadAllText(_debugPath + "/sheduler" + _file.Name);
+                            Sheduler? sheduler = JsonConvert.DeserializeObject<Sheduler>(jsonString);
+                        } break;
+                    }
+                    else
+                    {
+                        //тута заполняется БД как и надо
+                        string jsonString = File.ReadAllText(_debugPath + "/sheduler" + _file.Name);
+                        Sheduler? sheduler = JsonConvert.DeserializeObject<Sheduler>(jsonString);
+                    }
                 }
             }
         }
@@ -86,5 +90,5 @@ namespace TimetableAPI.Deserializator
 /*
  * string jsonString = File.ReadAllText(_debugPath + "/sheduler" + _fileName.Name);
 
-                Sheduler? sheduler = JsonSerializer.Deserialize<Sheduler>(jsonString);
+                Sheduler? sheduler = JsonConvert.DeserializeObject<Sheduler>(jsonString);
  */
