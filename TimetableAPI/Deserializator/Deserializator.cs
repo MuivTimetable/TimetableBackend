@@ -11,7 +11,6 @@ namespace TimetableAPI.Deserializator
 
     public class Sheduler
     {
-        public string? branch { get; set; }
         public int workYear { get; set; }
         public int workMonth { get; set; }
         public int workDate { get; set; }
@@ -22,6 +21,7 @@ namespace TimetableAPI.Deserializator
 
     public class Worksheduler
     {
+        public string? branch { get; set; }
         public string? workStart { get; set; }
         public string? workEnd { get; set; }
         public string? area { get; set; }
@@ -52,6 +52,7 @@ namespace TimetableAPI.Deserializator
     //module of Deserialization
     public class Deserializator
     {
+        public int awaitAccord = 0;
         public void shedulerDeserializator()
         {
             
@@ -61,27 +62,43 @@ namespace TimetableAPI.Deserializator
             var nameAndDate =JsonConvert.DeserializeObject<Rootnameanddate>(File.ReadAllText(nameAndDateJsonString));
 
             DirectoryInfo _dirPath = new DirectoryInfo(_debugPath + "/sheduler");
-
+            
             foreach (FileInfo _file in _dirPath.GetFiles()) 
-            {
+            { 
                 string lastWriteTime = _file.LastWriteTime.ToString();
-                for (int i = 0; i < nameAndDate.) 
+                for (int i = 0; i < nameAndDate.nameAndDate.Length; i++) 
                 {
-                    if (_file.Name == nameAndDate.) 
-                    {
-                        if (lastWriteTime != nameAndDate.)
-                        {
-                            //тута идёт обновление БД
-                            string jsonString = File.ReadAllText(_debugPath + "/sheduler" + _file.Name);
-                            Sheduler? sheduler = JsonConvert.DeserializeObject<Sheduler>(jsonString);
+                     if (_file.Name == nameAndDate.nameAndDate[i].name) 
+                     {
+                         if (lastWriteTime != nameAndDate.nameAndDate[i].date)
+                         {
+                            awaitAccord = 1;
+                            string shedulerJsonString = _debugPath + "/sheduler/" + _file.Name;
+                            Rootobject? sheduler = JsonConvert.DeserializeObject<Rootobject>(File.ReadAllText(shedulerJsonString));
                         } break;
-                    }
-                    else
-                    {
+                     }
+                     else
+                     {
+                        awaitAccord = 2;
+                        string shedulerJsonString = _debugPath + "/sheduler/" + _file.Name;
+                        Rootobject? sheduler = JsonConvert.DeserializeObject<Rootobject>(File.ReadAllText(shedulerJsonString));
+                     }
+                }
+                switch (awaitAccord)
+                {
+                    case 1:
+                        //тута идёт обновление БД
+                        
+                        break;
+
+                    case 2:
                         //тута заполняется БД как и надо
-                        string jsonString = File.ReadAllText(_debugPath + "/sheduler" + _file.Name);
-                        Sheduler? sheduler = JsonConvert.DeserializeObject<Sheduler>(jsonString);
-                    }
+                        
+                        break;
+
+                    default: 
+                        
+                        break;
                 }
             }
         }
