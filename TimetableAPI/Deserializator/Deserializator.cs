@@ -53,12 +53,12 @@ namespace TimetableAPI.Deserializator
     public class Deserializator
     {
         public int awaitAccord = 0;
-        public void shedulerDeserializator()
+        public void ShedulerDeserializator()
         {
             
             string? _debugPath = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
 
-            string nameAndDateJsonString = _debugPath + "\\NameAndDate\\Nameanddate.json";
+            string nameAndDateJsonString = _debugPath + "/NameAndDate/Nameanddate.json";
             var nameAndDate =JsonConvert.DeserializeObject<Rootnameanddate>(File.ReadAllText(nameAndDateJsonString));
 
             DirectoryInfo _dirPath = new DirectoryInfo(_debugPath + "/sheduler");
@@ -87,12 +87,12 @@ namespace TimetableAPI.Deserializator
                 switch (awaitAccord)
                 {
                     case 1:
-                        //тута идёт обновление БД
+                        //тут идёт обновление БД
                         
                         break;
 
                     case 2:
-                        //тута заполняется БД как и надо
+                        //тут заполняется БД как и надо
                         
                         break;
 

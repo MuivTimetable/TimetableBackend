@@ -41,4 +41,4 @@ app.MapControllers();
 
 Deserializator deserializator = new Deserializator();
 
-deserializator.shedulerDeserializator();
+deserializator.ShedulerDeserializator();
