@@ -65,24 +65,50 @@ namespace TimetableAPI.Repos
             return _context.Groups.ToList();
         }
 
-        public IEnumerable<Scheduler> GetSchedulers()
+        public TimetableReadAnswerDto GetSchedulers(TimetableReadRequestDto request)
         {
-            throw new NotImplementedException();
-        }
+            var answer = new TimetableReadAnswerDto();
 
-        public void PostComment()
-        {
-            throw new NotImplementedException();
-        }
+            int? groupId;
 
-        public void TotalizerClick()
-        {
-            throw new NotImplementedException();
-        }
+            if((request.Token == null && request.Group_id == null) 
+                || (request.Token != null && request.Group_id != null))
+            {
+                answer.success = false;
+                return (answer);
+            }
+            else if(request.Token != null)
+            {
+                groupId = _context.Users.Where(s => s.Token.Equals(request.Token)).Select(s => s.Group_id).FirstOrDefault();
+            }
+            else
+            {
+                groupId = request.Group_id;
+            }
 
-        public bool SaveChanges()
-        {
-            return (_context.SaveChanges()) >= 0;
+            //TODO: если понедельник раньше нынешнего месяца или воскресенье после нынешнего месяца проверка 
+
+            var monday = DateTime.Now;
+            var sunday = DateTime.Now;
+
+            while(monday.DayOfWeek != DayOfWeek.Monday)
+            {
+                monday.AddDays(-1);
+            }
+            while (sunday.DayOfWeek != DayOfWeek.Sunday)
+            {
+                sunday.AddDays(+1);
+            }
+
+            //TODO: сделай разделение на 3 инта и постом проверку в цикле
+
+
+
+
+
+
+
+            return (answer);
         }
 
         public void PostComment(CommentCreateDto comment)
@@ -94,5 +120,11 @@ namespace TimetableAPI.Repos
         {
             throw new NotImplementedException();
         }
+
+        public bool SaveChanges()
+        {
+            return (_context.SaveChanges()) >= 0;
+        }
+
     }
 }

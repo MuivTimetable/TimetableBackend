@@ -1,7 +1,9 @@
 ﻿namespace TimetableAPI.Dtos
 {
-    public class TimetableReadDto
+    public class TimetableReadAnswerDto
     {
+        public bool success { get; set; }
+
         public int day_id { get; set; }
         public string date { get; set; }
         public string workDay { get; set; }

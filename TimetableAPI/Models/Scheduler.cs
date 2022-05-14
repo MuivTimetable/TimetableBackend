@@ -14,6 +14,9 @@ namespace TimetableAPI.Models
         public int Group_id { get; set; }
 
         [Required]
+        public string Branch { get; set; }
+
+        [Required]
         public string Work_start { get; set; }
 
         [Required]

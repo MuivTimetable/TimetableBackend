@@ -6,7 +6,7 @@ using TimetableAPI.Repos;
 
 namespace TimetableAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/crc")]
     [ApiController]
     public class ClientResponseController : ControllerBase
     {
@@ -21,19 +21,33 @@ namespace TimetableAPI.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("auto")]
         public ActionResult<UserAutoAnswerDto> AutoriseUser(UserAutoRequestDto userAutoRequestDto)
         {
             var item = _repository.AutoriseUser(userAutoRequestDto);
             return Ok(item);
         }
 
-        [HttpGet]
+        [HttpGet("groups")]
         public ActionResult<IEnumerable<Group>> GetGroups()
         {
             var item = _repository.GetGroups();
 
             return Ok(_mapper.Map<IEnumerable<GroupReadDto>>(item));
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<TimetableReadAnswerDto>> GetSchedulers(TimetableReadRequestDto timetableReadRequestDto)
+        {
+            var item = _repository.GetSchedulers(timetableReadRequestDto);
+            if(item.success == true)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Атрибуты не указаны или указаны одновременно!");
+            }
         }
     }
 }
