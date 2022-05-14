@@ -65,17 +65,16 @@ namespace TimetableAPI.Repos
             return _context.Groups.ToList();
         }
 
-        public TimetableReadAnswerDto GetSchedulers(TimetableReadRequestDto request)
+        public IEnumerable<TimetableReadAnswerDto> GetSchedulers(TimetableReadRequestDto request)
         {
-            var answer = new TimetableReadAnswerDto();
+            var answer = new List<TimetableReadAnswerDto>();
 
             int? groupId;
 
             if((request.Token == null && request.Group_id == null) 
                 || (request.Token != null && request.Group_id != null))
             {
-                answer.success = false;
-                return (answer);
+                return answer;
             }
             else if(request.Token != null)
             {
@@ -86,21 +85,66 @@ namespace TimetableAPI.Repos
                 groupId = request.Group_id;
             }
 
-            //TODO: если понедельник раньше нынешнего месяца или воскресенье после нынешнего месяца проверка 
-
             var monday = DateTime.Now;
-            var sunday = DateTime.Now;
 
-            while(monday.DayOfWeek != DayOfWeek.Monday)
+            while(monday.DayOfWeek != DayOfWeek.Monday)/*Do?*/
             {
                 monday.AddDays(-1);
             }
-            while (sunday.DayOfWeek != DayOfWeek.Sunday)
+
+            while(monday.DayOfWeek != DayOfWeek.Sunday)
             {
-                sunday.AddDays(+1);
+                var schedulerDay = _context.SchedulerDates.Where
+                    (s => s.Work_Year.Equals(monday.Year) 
+                    && s.Work_Month.Equals(monday.Month) 
+                    && s.Work_Day.Equals(monday.Day))
+                    .FirstOrDefault();
+
+                var answerItem = new TimetableReadAnswerDto()
+                {
+                    day_id = schedulerDay.Day_id,
+                    Work_Date_Name = schedulerDay.Work_Date_Name,
+                    Work_Year = schedulerDay.Work_Year,
+                    Work_Month = schedulerDay.Work_Month,
+                    Work_Day = schedulerDay.Work_Day
+                };
+
+                var couplesId = _context.Schedulers_Groups.
+                    Join(_context.Schedulers, s => s.Scheduler_id, p => p.Scheduler_id, (s,p) => new {group = s.Group_id, id = p.Scheduler_id}).
+                    Where(s => s.group.Equals(groupId)).
+                    ToList();
+
+                var schedulers = new SchedulersInDays[couplesId.Count];
+
+                for (int i=0; i < couplesId.Count; i++)
+                {
+                    var couple = _context.Schedulers.Where(s => s.Scheduler_id.Equals(couplesId[0])).FirstOrDefault();
+
+                    var schedulerItem = new SchedulersInDays()
+                    {
+                        area = couple.Area,
+                        cathedra = couple.Cathedra,
+                        comment = couple.Comment,
+                        place = couple.Place,
+                        scheduler_id = couple.Scheduler_id,
+                        totalizer = couple.Totalizer,
+                        tutor = couple.Tutor,
+                        workEnd = couple.Work_end,
+                        workStart = couple.Work_start,
+                        workType = couple.Work_type
+
+                    };
+
+                    schedulers[i] = schedulerItem;
+                }
+                answerItem.Schedulers = schedulers;
+
+                answer.Add(answerItem);
+
+                monday.AddDays(+1);
             }
 
-            //TODO: сделай разделение на 3 инта и постом проверку в цикле
+            //TODO: сделай разделение на 3 инта и постом проверку в цикле + Сделай миграцию!
 
 
 

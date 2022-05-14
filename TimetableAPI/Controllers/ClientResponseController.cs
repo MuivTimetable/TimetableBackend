@@ -40,7 +40,7 @@ namespace TimetableAPI.Controllers
         public ActionResult<IEnumerable<TimetableReadAnswerDto>> GetSchedulers(TimetableReadRequestDto timetableReadRequestDto)
         {
             var item = _repository.GetSchedulers(timetableReadRequestDto);
-            if(item.success == true)
+            if(item != null)
             {
                 return Ok();
             }

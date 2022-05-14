@@ -11,9 +11,6 @@ namespace TimetableAPI.Models
         public int Day_id { get; set; }
 
         [Required]
-        public int Group_id { get; set; }
-
-        [Required]
         public string Branch { get; set; }
 
         [Required]
@@ -38,8 +35,5 @@ namespace TimetableAPI.Models
 
         [ForeignKey("Day_id")]
         public SchedulerDate SchedulerDate { get; set; }
-
-        [ForeignKey("Group_id")]
-        public Group Group { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace TimetableAPI.Repos
         void EmailCodeAuto();
 
         //TODO: понять как и что правильно передавать
-        TimetableReadAnswerDto GetSchedulers(TimetableReadRequestDto request);
+        IEnumerable<TimetableReadAnswerDto> GetSchedulers(TimetableReadRequestDto request);
 
         void PostComment(CommentCreateDto comment);
 

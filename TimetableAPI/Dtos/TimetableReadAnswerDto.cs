@@ -2,11 +2,11 @@
 {
     public class TimetableReadAnswerDto
     {
-        public bool success { get; set; }
-
         public int day_id { get; set; }
-        public string date { get; set; }
-        public string workDay { get; set; }
+        public int Work_Year { get; set; }
+        public int Work_Month { get; set; }
+        public int Work_Day { get; set; }
+        public string? Work_Date_Name { get; set; }
         public SchedulersInDays[] Schedulers { get; set; }
     }
 
