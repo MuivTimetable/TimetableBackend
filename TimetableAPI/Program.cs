@@ -1,4 +1,5 @@
 using TimetableAPI.Repos;
+using TimetableAPI.Deserializator;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,4 +42,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+//app.Run();
+
+Deserializator deserializator = new Deserializator();
+
+deserializator.ShedulerDeserializator();
