@@ -63,10 +63,10 @@ namespace TimetableAPI.Deserializator
             var nameAndDate =JsonConvert.DeserializeObject<Rootnameanddate>(File.ReadAllText(nameAndDateJsonString));
 
             DirectoryInfo _dirPath = new DirectoryInfo(_debugPath + "/sheduler");
-            while (cycleIsTrue == true)
+            /*while (cycleIsTrue == true)
             {
                 if (DateTime.UtcNow.Minute == 0 && DateTime.UtcNow.Second == 0)
-                {
+                {*/
                     foreach (FileInfo _file in _dirPath.GetFiles())
                     {
                         string lastWriteTime = _file.LastWriteTime.ToString();
@@ -106,13 +106,8 @@ namespace TimetableAPI.Deserializator
                                 break;
                         }
                     }
-                }
-            }
+                //}
+            //}
         }
     }
 }
-/*
- * string jsonString = File.ReadAllText(_debugPath + "/sheduler" + _fileName.Name);
-
-                Sheduler? sheduler = JsonConvert.DeserializeObject<Sheduler>(jsonString);
- */
