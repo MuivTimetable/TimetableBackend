@@ -11,8 +11,8 @@ using TimetableAPI;
 namespace TimetableAPI.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220504022155_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220515152320_AddTimetableMigration")]
+    partial class AddTimetableMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -82,45 +82,53 @@ namespace TimetableAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Area")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Branch")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Cathedra")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(250)
+                        .HasColumnType("varchar(250)");
 
                     b.Property<int>("Day_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Group_id")
-                        .HasColumnType("int");
-
                     b.Property<string>("Place")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<int>("Totalizer")
                         .HasColumnType("int");
 
                     b.Property<string>("Tutor")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Work_end")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("Work_start")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("Work_type")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
 
                     b.HasKey("Scheduler_id");
 
                     b.HasIndex("Day_id");
-
-                    b.HasIndex("Group_id");
 
                     b.ToTable("Schedulers");
                 });
@@ -128,12 +136,14 @@ namespace TimetableAPI.Migrations
             modelBuilder.Entity("TimetableAPI.Models.Scheduler_Group", b =>
                 {
                     b.Property<int>("Scheduler_id")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(0);
 
                     b.Property<int>("Group_id")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
 
-                    b.HasKey("Scheduler_id");
+                    b.HasKey("Scheduler_id", "Group_id");
 
                     b.HasIndex("Group_id");
 
@@ -146,10 +156,17 @@ namespace TimetableAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)");
+                    b.Property<string>("Work_Date_Name")
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
 
-                    b.Property<int>("Work_day")
+                    b.Property<int>("Work_Day")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Work_Month")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Work_Year")
                         .HasColumnType("int");
 
                     b.HasKey("Day_id");
@@ -179,7 +196,8 @@ namespace TimetableAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -207,14 +225,6 @@ namespace TimetableAPI.Migrations
                         .HasForeignKey("Day_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("TimetableAPI.Models.Group", "Group")
-                        .WithMany()
-                        .HasForeignKey("Group_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Group");
 
                     b.Navigation("SchedulerDate");
                 });

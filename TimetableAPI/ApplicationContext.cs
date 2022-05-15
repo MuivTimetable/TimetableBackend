@@ -15,5 +15,11 @@
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Report> Reports { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Scheduler_Group>().HasKey(u => new { u.Scheduler_id, u.Group_id });
+        }
     }
 }

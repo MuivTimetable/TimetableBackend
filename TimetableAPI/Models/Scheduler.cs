@@ -10,25 +10,31 @@ namespace TimetableAPI.Models
         [Required]
         public int Day_id { get; set; }
 
-        [Required]
+        [Required, MaxLength(50)]
         public string Branch { get; set; }
 
-        [Required]
+        [Required, MaxLength(10)]
         public string Work_start { get; set; }
 
-        [Required]
+        [Required, MaxLength(10)]
         public string Work_end { get; set; }
 
+        [MaxLength(50)]
         public string? Area { get; set; }
 
+        [MaxLength(10)]
         public string? Work_type { get; set; }
 
+        [MaxLength(10)]
         public string? Place { get; set; }
 
+        [MaxLength(50)]
         public string? Tutor { get; set; }
 
+        [MaxLength(50)]
         public string? Cathedra { get; set; }
 
+        [MaxLength(250)]
         public string? Comment { get; set; }
 
         public int Totalizer { get; set; }

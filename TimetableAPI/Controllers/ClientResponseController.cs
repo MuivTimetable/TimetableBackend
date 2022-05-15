@@ -36,13 +36,13 @@ namespace TimetableAPI.Controllers
             return Ok(_mapper.Map<IEnumerable<GroupReadDto>>(item));
         }
 
-        [HttpGet]
+        [HttpPost("scheduler")]
         public ActionResult<IEnumerable<TimetableReadAnswerDto>> GetSchedulers(TimetableReadRequestDto timetableReadRequestDto)
         {
             var item = _repository.GetSchedulers(timetableReadRequestDto);
             if(item != null)
             {
-                return Ok();
+                return Ok(item);
             }
             else
             {

@@ -9,6 +9,8 @@ namespace TimetableAPI.Profiles
         {
             CreateMap<Group, GroupReadDto>();
 
+
+
            // CreateMap<>
         }
     }

@@ -67,16 +67,17 @@ namespace TimetableAPI.Repos
 
         public IEnumerable<TimetableReadAnswerDto> GetSchedulers(TimetableReadRequestDto request)
         {
-            var answer = new List<TimetableReadAnswerDto>();
-
             int? groupId;
 
             if((request.Token == null && request.Group_id == null) 
                 || (request.Token != null && request.Group_id != null))
             {
-                return answer;
+                return null;
             }
-            else if(request.Token != null)
+
+            var answer = new List<TimetableReadAnswerDto>();
+
+            if (request.Token != null)
             {
                 groupId = _context.Users.Where(s => s.Token.Equals(request.Token)).Select(s => s.Group_id).FirstOrDefault();
             }
@@ -89,7 +90,7 @@ namespace TimetableAPI.Repos
 
             while(monday.DayOfWeek != DayOfWeek.Monday)/*Do?*/
             {
-                monday.AddDays(-1);
+                monday = monday.AddDays(-1);
             }
 
             while(monday.DayOfWeek != DayOfWeek.Sunday)
@@ -102,11 +103,12 @@ namespace TimetableAPI.Repos
 
                 var answerItem = new TimetableReadAnswerDto()
                 {
-                    day_id = schedulerDay.Day_id,
+                    Day_id = schedulerDay.Day_id,
                     Work_Date_Name = schedulerDay.Work_Date_Name,
                     Work_Year = schedulerDay.Work_Year,
                     Work_Month = schedulerDay.Work_Month,
-                    Work_Day = schedulerDay.Work_Day
+                    Work_Day = schedulerDay.Work_Day,
+                    DayOfTheWeek = monday.DayOfWeek.ToString()
                 };
 
                 var couplesId = _context.Schedulers_Groups.
@@ -122,17 +124,17 @@ namespace TimetableAPI.Repos
 
                     var schedulerItem = new SchedulersInDays()
                     {
-                        area = couple.Area,
-                        cathedra = couple.Cathedra,
-                        comment = couple.Comment,
-                        place = couple.Place,
-                        scheduler_id = couple.Scheduler_id,
-                        totalizer = couple.Totalizer,
-                        tutor = couple.Tutor,
-                        workEnd = couple.Work_end,
-                        workStart = couple.Work_start,
-                        workType = couple.Work_type
-
+                        Area = couple.Area,
+                        Cathedra = couple.Cathedra,
+                        Comment = couple.Comment,
+                        Place = couple.Place,
+                        Scheduler_id = couple.Scheduler_id,
+                        Totalizer = couple.Totalizer,
+                        Tutor = couple.Tutor,
+                        WorkEnd = couple.Work_end,
+                        WorkStart = couple.Work_start,
+                        WorkType = couple.Work_type,
+                        Branch = couple.Branch                        
                     };
 
                     schedulers[i] = schedulerItem;

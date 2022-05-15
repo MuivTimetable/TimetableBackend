@@ -2,25 +2,27 @@
 {
     public class TimetableReadAnswerDto
     {
-        public int day_id { get; set; }
+        public int Day_id { get; set; }
         public int Work_Year { get; set; }
         public int Work_Month { get; set; }
         public int Work_Day { get; set; }
         public string? Work_Date_Name { get; set; }
+        public string DayOfTheWeek { get; set; }
         public SchedulersInDays[] Schedulers { get; set; }
     }
 
     public class SchedulersInDays
     {
-        public int scheduler_id { get; set; }
-        public string workStart { get; set; }
-        public string workEnd { get; set; }
-        public string area { get; set; }
-        public string workType { get; set; }
-        public string place { get; set; }
-        public string tutor { get; set; }
-        public string cathedra { get; set; }
-        public string comment { get; set; }
-        public int totalizer { get; set; }
+        public int Scheduler_id { get; set; }
+        public string WorkStart { get; set; }
+        public string WorkEnd { get; set; }
+        public string Branch { get; set; }
+        public string Area { get; set; }
+        public string WorkType { get; set; }
+        public string Place { get; set; }
+        public string Tutor { get; set; }
+        public string Cathedra { get; set; }
+        public string Comment { get; set; }
+        public int Totalizer { get; set; }
     }
 }

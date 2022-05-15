@@ -5,7 +5,7 @@
         [Key]
         public int User_id { get; set; }
 
-        [Required]
+        [Required,MaxLength(50)]
         public string Name { get; set; }
 
         [Required]

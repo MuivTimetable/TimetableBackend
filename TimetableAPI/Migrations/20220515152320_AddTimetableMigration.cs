@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TimetableAPI.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class AddTimetableMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -66,8 +66,11 @@ namespace TimetableAPI.Migrations
                 {
                     Day_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Work_day = table.Column<int>(type: "int", nullable: false)
+                    Work_Year = table.Column<int>(type: "int", nullable: false),
+                    Work_Month = table.Column<int>(type: "int", nullable: false),
+                    Work_Day = table.Column<int>(type: "int", nullable: false),
+                    Work_Date_Name = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -81,7 +84,7 @@ namespace TimetableAPI.Migrations
                 {
                     User_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Login = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -118,34 +121,29 @@ namespace TimetableAPI.Migrations
                     Scheduler_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Day_id = table.Column<int>(type: "int", nullable: false),
-                    Group_id = table.Column<int>(type: "int", nullable: false),
-                    Work_start = table.Column<string>(type: "longtext", nullable: false)
+                    Branch = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Work_end = table.Column<string>(type: "longtext", nullable: false)
+                    Work_start = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Area = table.Column<string>(type: "longtext", nullable: true)
+                    Work_end = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Work_type = table.Column<string>(type: "longtext", nullable: true)
+                    Area = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Place = table.Column<string>(type: "longtext", nullable: true)
+                    Work_type = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Tutor = table.Column<string>(type: "longtext", nullable: true)
+                    Place = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cathedra = table.Column<string>(type: "longtext", nullable: true)
+                    Tutor = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Comment = table.Column<string>(type: "longtext", nullable: true)
+                    Cathedra = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Comment = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Totalizer = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Schedulers", x => x.Scheduler_id);
-                    table.ForeignKey(
-                        name: "FK_Schedulers_Groups_Group_id",
-                        column: x => x.Group_id,
-                        principalTable: "Groups",
-                        principalColumn: "Group_id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Schedulers_SchedulerDates_Day_id",
                         column: x => x.Day_id,
@@ -164,7 +162,7 @@ namespace TimetableAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Schedulers_Groups", x => x.Scheduler_id);
+                    table.PrimaryKey("PK_Schedulers_Groups", x => new { x.Scheduler_id, x.Group_id });
                     table.ForeignKey(
                         name: "FK_Schedulers_Groups_Groups_Group_id",
                         column: x => x.Group_id,
@@ -184,11 +182,6 @@ namespace TimetableAPI.Migrations
                 name: "IX_Schedulers_Day_id",
                 table: "Schedulers",
                 column: "Day_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Schedulers_Group_id",
-                table: "Schedulers",
-                column: "Group_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Schedulers_Groups_Group_id",
@@ -221,10 +214,10 @@ namespace TimetableAPI.Migrations
                 name: "Schedulers");
 
             migrationBuilder.DropTable(
-                name: "Permissions");
+                name: "Groups");
 
             migrationBuilder.DropTable(
-                name: "Groups");
+                name: "Permissions");
 
             migrationBuilder.DropTable(
                 name: "SchedulerDates");
