@@ -1,0 +1,145 @@
+{
+ "sheduler": [
+  {
+   "workYear": 2022,
+   "workMonth": 6,
+   "workDate": 14,
+   "workDateName": "14 июня 2022 г.",
+   "workDay": "вторник",
+   "workSheduler": [
+    {
+     "branch": "Аспирантура",
+     "workStart": "18:40",
+     "workEnd": "21:50",
+     "hours": 4,
+     "area": "Научно-исследовательская деятельность",
+     "workType": "Зачеты",
+     "place": "320",
+     "tutor": "Уварова Ирина Александровна",
+     "cathedra": "Кафедра юридических дисциплин",
+     "students": 2,
+     "groups": [
+      {
+       "groupNum": "АД 5-20",
+       "groupStudents": 2
+      }
+     ]
+    },
+    {
+     "branch": "Аспирантура",
+     "workStart": "18:40",
+     "workEnd": "21:50",
+     "hours": 4,
+     "area": "Научно-исследовательская деятельность",
+     "workType": "Зачеты",
+     "place": "319",
+     "tutor": "Бушуева Наталья Владимировна",
+     "cathedra": "Кафедра экономика и управление",
+     "students": 3,
+     "groups": [
+      {
+       "groupNum": "АД 2-20(ЭГХиСО)",
+       "groupStudents": 3
+      }
+     ]
+    },
+    {
+     "branch": "Аспирантура",
+     "workStart": "18:40",
+     "workEnd": "21:50",
+     "hours": 4,
+     "area": "Научно-исследовательская деятельность",
+     "workType": "Зачеты с оценкой",
+     "place": "202",
+     "tutor": "Голышев Вадим Григорьевич",
+     "cathedra": "Кафедра юридических дисциплин",
+     "students": 22,
+     "groups": [
+      {
+       "groupNum": "АД 9-20",
+       "groupStudents": 11
+      },
+      {
+       "groupNum": "АД 15-21",
+       "groupStudents": 11
+      }
+     ]
+    },
+    {
+     "branch": "Аспирантура",
+     "workStart": "18:40",
+     "workEnd": "21:50",
+     "hours": 4,
+     "area": "Научно-исследовательская деятельность",
+     "workType": "Зачеты с оценкой",
+     "place": "114",
+     "tutor": "Федосеева Елена Сергеевна",
+     "cathedra": "Кафедра психологии и педагогики",
+     "students": 24,
+     "groups": [
+      {
+       "groupNum": "АД 10-20",
+       "groupStudents": 8
+      },
+      {
+       "groupNum": "АД 11-20",
+       "groupStudents": 8
+      },
+      {
+       "groupNum": "АД 12-21",
+       "groupStudents": 8
+      }
+     ]
+    },
+    {
+     "branch": "Аспирантура",
+     "workStart": "18:40",
+     "workEnd": "21:50",
+     "hours": 4,
+     "area": "Научно-исследовательская деятельность",
+     "workType": "Зачеты с оценкой",
+     "place": "124",
+     "tutor": "Зайцев Сергей Александрович",
+     "cathedra": "Кафедра информационных систем",
+     "students": 75,
+     "groups": [
+      {
+       "groupNum": "АД 7-20",
+       "groupStudents": 25
+      },
+      {
+       "groupNum": "АД 7-19",
+       "groupStudents": 25
+      },
+      {
+       "groupNum": "АД 13-21",
+       "groupStudents": 25
+      }
+     ]
+    },
+    {
+     "branch": "Аспирантура",
+     "workStart": "18:40",
+     "workEnd": "21:50",
+     "hours": 4,
+     "area": "Научно-исследовательская деятельность",
+     "workType": "Зачеты с оценкой",
+     "place": "125",
+     "tutor": "Маковецкий Михаил Юрьевич",
+     "cathedra": "Кафедра менеджмента",
+     "students": 12,
+     "groups": [
+      {
+       "groupNum": "АД 2-20(М)",
+       "groupStudents": 6
+      },
+      {
+       "groupNum": "АД 14-21",
+       "groupStudents": 6
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

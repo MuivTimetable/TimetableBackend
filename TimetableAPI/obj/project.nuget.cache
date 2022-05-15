@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "OGs198cs+qIzA0CQ8MeGXCMc7KKbwO1rmJkFLrO3VnAsJS4kro2RJYbPoZSOw3/GS5SpnVgHR1N2NSSh5e22KA==",
+  "dgSpecHash": "s7gCRXvN9nejs4yf6DSiExW2+XLN4ZjqEuqk6LTn7NV1V+KMB7uAJWsPPZ74Y9JRi5n48L6pykzaYAntb3GDWA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Суслан\\Documents\\GitHub\\LazyProject\\TimetableBackend\\TimetableAPI\\TimetableAPI.csproj",
   "expectedPackageFiles": [
@@ -28,6 +28,7 @@
     "C:\\Users\\Суслан\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\Суслан\\.nuget\\packages\\mimekit\\3.2.0\\mimekit.3.2.0.nupkg.sha512",
     "C:\\Users\\Суслан\\.nuget\\packages\\mysqlconnector\\2.1.2\\mysqlconnector.2.1.2.nupkg.sha512",
+    "C:\\Users\\Суслан\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\Суслан\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\6.0.1\\pomelo.entityframeworkcore.mysql.6.0.1.nupkg.sha512",
     "C:\\Users\\Суслан\\.nuget\\packages\\portable.bouncycastle\\1.9.0\\portable.bouncycastle.1.9.0.nupkg.sha512",
     "C:\\Users\\Суслан\\.nuget\\packages\\swashbuckle.aspnetcore\\6.3.1\\swashbuckle.aspnetcore.6.3.1.nupkg.sha512",
