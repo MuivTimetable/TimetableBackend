@@ -6,6 +6,6 @@
 
         public bool MoreOrLess { get; set; }
 
-        public int Scheduler_id { get; set; }
+        public int[] Scheduler_id { get; set; }
     }
 }

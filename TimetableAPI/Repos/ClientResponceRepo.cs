@@ -159,12 +159,22 @@ namespace TimetableAPI.Repos
 
         public void PostComment(CommentCreateDto comment)
         {
-            throw new NotImplementedException();
+            var scheduler = _context.Schedulers.Where(s => s.Scheduler_id.Equals(comment.Scheduler_id)).FirstOrDefault();
+
+            scheduler.Comment = comment.Comment;
+
+            SaveChanges();
         }
 
         public void TotalizerClick(TotalizerUpdateDto totalizer)
         {
-            throw new NotImplementedException();
+            for(int i = 0; i < totalizer.Scheduler_id.Length; i++)
+            {
+                var scheduler = _context.Schedulers.Where(s => s.Scheduler_id.Equals(totalizer.Scheduler_id[i])).FirstOrDefault();
+
+                scheduler.Totalizer = totalizer.MoreOrLess ? +1 : -1;
+            }
+            SaveChanges();
         }
 
         public bool SaveChanges()

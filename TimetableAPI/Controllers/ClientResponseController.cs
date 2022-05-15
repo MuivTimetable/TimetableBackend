@@ -49,5 +49,19 @@ namespace TimetableAPI.Controllers
                 return BadRequest("Атрибуты не указаны или указаны одновременно!");
             }
         }
+
+        [HttpPost("comment")]
+        public ActionResult PostComment(CommentCreateDto commentCreateDto)
+        {
+            _repository.PostComment(commentCreateDto);
+            return Ok();
+        }
+
+        [HttpPost("comment")]
+        public ActionResult TotalizerClick(TotalizerUpdateDto totalizerUpdateDto)
+        {
+            _repository.TotalizerClick(totalizerUpdateDto);
+            return Ok();
+        }
     }
 }
