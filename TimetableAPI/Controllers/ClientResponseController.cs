@@ -60,18 +60,22 @@ namespace TimetableAPI.Controllers
             return Ok();
         }
 
-        [HttpPost("comment")]
+        [HttpPost("totalizer")]
         public ActionResult TotalizerClick(TotalizerUpdateDto totalizerUpdateDto)
         {
             _repository.TotalizerClick(totalizerUpdateDto);
             return Ok();
         }
 
-        [HttpPost("startdes")]
-        public ActionResult RunDeserializer(string code)
+        [HttpGet("startdes")]
+        public ActionResult RunDeserializer(int code)
         {
-            _deserializator.ShedulerDeserializator();
-            return Ok();
+            if (code == 1111)
+            {
+                _deserializator.ShedulerDeserializator();
+                return Ok();
+            }
+            else return BadRequest("А ну, супостат, отведуй силушки богатырской!!!");
         }
     }
 }

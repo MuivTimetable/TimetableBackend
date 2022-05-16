@@ -109,6 +109,7 @@ namespace TimetableAPI.Deserializator
                                 awaitAccord = 2;
                             }
                         }
+
                         switch (awaitAccord)
                         {
                             case 1:
@@ -118,9 +119,16 @@ namespace TimetableAPI.Deserializator
 
                             case 2:
                                 //тут заполняется БД как и надо
-                                var group = new Models.Group { Group_name = sheduler.sheduler[0].workSheduler[0].groups[0].groupNum };
-                                _context.Groups.Add(group);
-                                _context.SaveChanges();
+                                for (int i = 0; i < sheduler.sheduler.Length; i++)
+                                {
+                                    for (int j = 0; j < sheduler.sheduler[i].workSheduler.Length; j++)
+                                    {
+                                        for (int h = 0; h < sheduler.sheduler[i].workSheduler[j].groups.Length; h++)
+                                        {
+                                            
+                                        }
+                                    }
+                                }
                                 break;
 
                             default:
