@@ -11,6 +11,7 @@ builder.Services.AddScoped<IClientResponceRepo, ClientResponceRepo>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddScoped<IDeserializator, Deserializator>();
 
 //TODO: �������� ��������� �������
 
@@ -42,8 +43,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//app.Run();
+app.Run();
 
-Deserializator deserializator = new Deserializator();
+//var deserializator = new Deserializator();
 
-deserializator.ShedulerDeserializator();
+//deserializator.ShedulerDeserializator();
+
+

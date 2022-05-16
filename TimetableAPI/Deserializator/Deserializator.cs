@@ -1,6 +1,8 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+
 namespace TimetableAPI.Deserializator
 {
     //all of this next is the Sheduler json model
@@ -50,8 +52,28 @@ namespace TimetableAPI.Deserializator
     }
 
     //module of Deserialization
-    public class Deserializator
+
+    public class DeserializatorLaunch
     {
+        private readonly IDeserializator _deserializator;
+        public DeserializatorLaunch(IDeserializator deserializator)
+        {
+            _deserializator = deserializator;
+        }
+
+        public void Launcher()
+        {
+            _deserializator.ShedulerDeserializator();
+        }
+    }
+    public class Deserializator : IDeserializator
+    {
+        private readonly ApplicationContext _context;
+        public Deserializator(ApplicationContext context)
+        {
+            _context = context;
+        }
+
         public int awaitAccord = 0;
         protected bool cycleIsTrue = true;
         public void ShedulerDeserializator()
@@ -69,6 +91,8 @@ namespace TimetableAPI.Deserializator
                 {*/
                     foreach (FileInfo _file in _dirPath.GetFiles())
                     {
+                        string shedulerJsonString = _debugPath + "/sheduler/" + _file.Name;
+                        Rootobject? sheduler = JsonConvert.DeserializeObject<Rootobject>(File.ReadAllText(shedulerJsonString));
                         string lastWriteTime = _file.LastWriteTime.ToString();
                         for (int i = 0; i < nameAndDate.nameAndDate.Length; i++)
                         {
@@ -77,16 +101,12 @@ namespace TimetableAPI.Deserializator
                                 if (lastWriteTime != nameAndDate.nameAndDate[i].date)
                                 {
                                     awaitAccord = 1;
-                                    string shedulerJsonString = _debugPath + "/sheduler/" + _file.Name;
-                                    Rootobject? sheduler = JsonConvert.DeserializeObject<Rootobject>(File.ReadAllText(shedulerJsonString));
                                 }
                                 break;
                             }
                             else
                             {
                                 awaitAccord = 2;
-                                string shedulerJsonString = _debugPath + "/sheduler/" + _file.Name;
-                                Rootobject? sheduler = JsonConvert.DeserializeObject<Rootobject>(File.ReadAllText(shedulerJsonString));
                             }
                         }
                         switch (awaitAccord)
@@ -98,7 +118,9 @@ namespace TimetableAPI.Deserializator
 
                             case 2:
                                 //тут заполняется БД как и надо
-
+                                var group = new Models.Group { Group_name = sheduler.sheduler[0].workSheduler[0].groups[0].groupNum };
+                                _context.Groups.Add(group);
+                                _context.SaveChanges();
                                 break;
 
                             default:
