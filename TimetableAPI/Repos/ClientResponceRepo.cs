@@ -88,7 +88,7 @@ namespace TimetableAPI.Repos
 
             var monday = DateTime.Now;
 
-            while(monday.DayOfWeek != DayOfWeek.Monday)/*Do?*/
+            while(monday.DayOfWeek != DayOfWeek.Monday)
             {
                 monday = monday.AddDays(-1);
             }
