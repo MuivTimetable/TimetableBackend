@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TimetableAPI.Deserializator;
 using TimetableAPI.Dtos;
 using TimetableAPI.Repos;
 
@@ -12,12 +13,14 @@ namespace TimetableAPI.Controllers
     {
 
         private readonly IClientResponceRepo _repository;
+        private readonly IDeserializator _deserializator;
         private readonly IMapper _mapper;
 
-        public ClientResponseController(IClientResponceRepo repository, IMapper mapper)
+        public ClientResponseController(IClientResponceRepo repository, IMapper mapper, IDeserializator deserializator)
         {
             _repository = repository;
             _mapper = mapper;
+            _deserializator = deserializator;
         }
 
 
@@ -29,7 +32,7 @@ namespace TimetableAPI.Controllers
         }
 
         [HttpGet("groups")]
-        public ActionResult<IEnumerable<Group>> GetGroups()
+        public ActionResult<IEnumerable<Models.Group>> GetGroups()
         {
             var item = _repository.GetGroups();
 
@@ -61,6 +64,13 @@ namespace TimetableAPI.Controllers
         public ActionResult TotalizerClick(TotalizerUpdateDto totalizerUpdateDto)
         {
             _repository.TotalizerClick(totalizerUpdateDto);
+            return Ok();
+        }
+
+        [HttpPost("startdes")]
+        public ActionResult RunDeserializer(string code)
+        {
+            _deserializator.ShedulerDeserializator();
             return Ok();
         }
     }

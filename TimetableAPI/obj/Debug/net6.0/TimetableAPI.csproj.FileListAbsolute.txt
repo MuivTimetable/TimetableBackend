@@ -79,3 +79,4 @@ C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI
 C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\obj\Debug\net6.0\TimetableAPI.genruntimeconfig.cache
 C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\obj\Debug\net6.0\ref\TimetableAPI.dll
 C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
