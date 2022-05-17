@@ -121,8 +121,32 @@ namespace TimetableAPI.Deserializator
                                 //тут заполняется БД как и надо
                                 for (int i = 0; i < sheduler.sheduler.Length; i++)
                                 {
+                                    string stringActualDayId = Convert.ToString(sheduler.sheduler[i].workDate) + Convert.ToString(sheduler.sheduler[i].workMonth) + Convert.ToString(sheduler.sheduler[i].workYear);
+                                    int intActualDayID = Int32.Parse(stringActualDayId);
+                                    _context.SchedulerDates.Add(new Models.SchedulerDate { 
+                                        Day_id = intActualDayID,
+                                        Work_Date_Name = sheduler.sheduler[i].workDateName, 
+                                        Work_Day = sheduler.sheduler[i].workDate, 
+                                        Work_Month = sheduler.sheduler[i].workMonth, 
+                                        Work_Year = sheduler.sheduler[i].workYear });
+                                    _context.SaveChanges();
                                     for (int j = 0; j < sheduler.sheduler[i].workSheduler.Length; j++)
                                     {
+
+                                        _context.Schedulers.Add(new Models.Scheduler { 
+                                            Day_id = intActualDayID,
+                                            Branch = sheduler.sheduler[i].workSheduler[j].branch,
+                                            Work_start = sheduler.sheduler[i].workSheduler[j].workStart,
+                                            Work_end = sheduler.sheduler[i].workSheduler[j].workEnd,
+                                            Area = sheduler.sheduler[i].workSheduler[j].area,
+                                            Work_type = sheduler.sheduler[i].workSheduler[j].workType,
+                                            Place = sheduler.sheduler[i].workSheduler[j].place,
+                                            Tutor = sheduler.sheduler[i].workSheduler[j].tutor,
+                                            Cathedra = sheduler.sheduler[i].workSheduler[j].cathedra,
+                                            Totalizer = 0
+                                        });
+
+                                        _context.Schedulers_Groups.Add(new Models.Scheduler_Group { });
                                         for (int h = 0; h < sheduler.sheduler[i].workSheduler[j].groups.Length; h++)
                                         {
                                             
