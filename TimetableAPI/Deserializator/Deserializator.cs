@@ -124,7 +124,7 @@ namespace TimetableAPI.Deserializator
 
                                     var deleteContent = _context.Schedulers.Where(k => k.Day_id == intActualDayID).ToList();
                                     _context.Schedulers.RemoveRange(deleteContent);
-                                    _context.SaveChanges();
+                                    
                                     for (int j = 0; j < sheduler.sheduler[i].workSheduler.Length; j++)
                                     {
 
@@ -141,23 +141,26 @@ namespace TimetableAPI.Deserializator
                                             Cathedra = sheduler.sheduler[i].workSheduler[j].cathedra,
                                             Totalizer = 0
                                         });
-                                        _context.SaveChanges();
+                                        
 
-                                        var schedulerLINQ = _context.Schedulers.Select(s => new { s.Scheduler_id }).ToList().Last().ToString();
+                                        var schedulerLINQ = _context.Schedulers.Select(s => new { s.Scheduler_id }).Last().ToString();
                                         var schedulerID = Int32.Parse(schedulerLINQ);
 
                                         for (int h = 0; h < sheduler.sheduler[i].workSheduler[j].groups.Length; h++)
                                         {
+                                            var stringGroupID = "1" + sheduler.sheduler[i].workSheduler[j].groups[h];
+                                            var intGroupID = Int32.Parse(stringGroupID);
                                             _context.Schedulers_Groups.Add(new Models.Scheduler_Group
                                             {
                                                 Scheduler_id = schedulerID,
-                                                Group_id = sheduler.sheduler[i].workSheduler[j].groups[h].groupCode
+                                                Group_id = intGroupID
                                             });
-                                            _context.SaveChanges();
+                                            
                                         }
                                     }
                                 }
-                                
+                                _context.SaveChanges();
+
                                 break;
 
                             case 2:
@@ -176,7 +179,7 @@ namespace TimetableAPI.Deserializator
                                         Work_Month = sheduler.sheduler[i].workMonth, 
                                         Work_Year = sheduler.sheduler[i].workYear 
                                     });
-                                    _context.SaveChanges();
+                                    
                                     for (int j = 0; j < sheduler.sheduler[i].workSheduler.Length; j++)
                                     {
 
@@ -193,22 +196,25 @@ namespace TimetableAPI.Deserializator
                                             Cathedra = sheduler.sheduler[i].workSheduler[j].cathedra,
                                             Totalizer = 0
                                         });
-                                        _context.SaveChanges();
+                                        
 
-                                        var schedulerLINQ = _context.Schedulers.Select(s => new { s.Scheduler_id }).ToList().Last().ToString();
+                                        var schedulerLINQ = _context.Schedulers.Select(s => new { s.Scheduler_id }).Last().ToString();
                                         var schedulerID = Int32.Parse(schedulerLINQ);
                                         
                                         for (int h = 0; h < sheduler.sheduler[i].workSheduler[j].groups.Length; h++)
                                         {
+                                            var stringGroupID = "1" + sheduler.sheduler[i].workSheduler[j].groups[h];
+                                            var intGroupID = Int32.Parse(stringGroupID);
                                             _context.Schedulers_Groups.Add(new Models.Scheduler_Group
-                                            {
+                                                {
                                                 Scheduler_id = schedulerID,
-                                                Group_id = sheduler.sheduler[i].workSheduler[j].groups[h].groupCode
-                                            });
-                                            _context.SaveChanges();
+                                                Group_id = intGroupID
+                                                });
+                                            
                                         }
                                     }
                                 }
+                                _context.SaveChanges();
                                 break;
 
                             default:
