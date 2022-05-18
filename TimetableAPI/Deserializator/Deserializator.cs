@@ -116,6 +116,48 @@ namespace TimetableAPI.Deserializator
                             case 1:
                                 //тут идёт обновление БД
 
+                                for (int i = 0; i < sheduler.sheduler.Length; i++)
+                                {
+
+                                    string stringActualDayId = Convert.ToString(sheduler.sheduler[i].workDate) + Convert.ToString(sheduler.sheduler[i].workMonth) + Convert.ToString(sheduler.sheduler[i].workYear);
+                                    int intActualDayID = Int32.Parse(stringActualDayId);
+
+                                    var deleteContent = _context.Schedulers.Where(k => k.Day_id == intActualDayID).ToList();
+                                    _context.Schedulers.RemoveRange(deleteContent);
+                                    _context.SaveChanges();
+                                    for (int j = 0; j < sheduler.sheduler[i].workSheduler.Length; j++)
+                                    {
+
+                                        _context.Schedulers.Add(new Models.Scheduler
+                                        {
+                                            Day_id = intActualDayID,
+                                            Branch = sheduler.sheduler[i].workSheduler[j].branch,
+                                            Work_start = sheduler.sheduler[i].workSheduler[j].workStart,
+                                            Work_end = sheduler.sheduler[i].workSheduler[j].workEnd,
+                                            Area = sheduler.sheduler[i].workSheduler[j].area,
+                                            Work_type = sheduler.sheduler[i].workSheduler[j].workType,
+                                            Place = sheduler.sheduler[i].workSheduler[j].place,
+                                            Tutor = sheduler.sheduler[i].workSheduler[j].tutor,
+                                            Cathedra = sheduler.sheduler[i].workSheduler[j].cathedra,
+                                            Totalizer = 0
+                                        });
+                                        _context.SaveChanges();
+
+                                        var schedulerLINQ = _context.Schedulers.Select(s => new { s.Scheduler_id }).ToList().Last().ToString();
+                                        var schedulerID = Int32.Parse(schedulerLINQ);
+
+                                        for (int h = 0; h < sheduler.sheduler[i].workSheduler[j].groups.Length; h++)
+                                        {
+                                            _context.Schedulers_Groups.Add(new Models.Scheduler_Group
+                                            {
+                                                Scheduler_id = schedulerID,
+                                                Group_id = sheduler.sheduler[i].workSheduler[j].groups[h].groupCode
+                                            });
+                                            _context.SaveChanges();
+                                        }
+                                    }
+                                }
+                                
                                 break;
 
                             case 2:
@@ -163,6 +205,7 @@ namespace TimetableAPI.Deserializator
                                                 Scheduler_id = schedulerID,
                                                 Group_id = sheduler.sheduler[i].workSheduler[j].groups[h].groupCode
                                             });
+                                            _context.SaveChanges();
                                         }
                                     }
                                 }
