@@ -1,4 +1,5 @@
 using TimetableAPI.Repos;
+using TimetableAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IClientResponceRepo, ClientResponceRepo>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.Configure<SMTPConfig>(builder.Configuration.GetSection("SMTPConfig"));
 
 
 //TODO: �������� ��������� �������

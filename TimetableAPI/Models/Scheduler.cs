@@ -22,10 +22,9 @@ namespace TimetableAPI.Models
         [MaxLength(50)]
         public string? Area { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(30)]
         public string? Work_type { get; set; }
 
-        [MaxLength(10)]
         public string? Place { get; set; }
 
         [MaxLength(50)]

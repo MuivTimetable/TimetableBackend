@@ -6,5 +6,6 @@
 
         public int Scheduler_id { get; set; }
 
+        public string Token { get; set; }
     }
 }

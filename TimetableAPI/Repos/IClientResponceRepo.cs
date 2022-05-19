@@ -1,4 +1,6 @@
-﻿using TimetableAPI.Dtos;
+﻿using Microsoft.Extensions.Options;
+using TimetableAPI.Dtos;
+using TimetableAPI.Services;
 
 namespace TimetableAPI.Repos
 {
@@ -6,9 +8,9 @@ namespace TimetableAPI.Repos
     {
         bool SaveChanges();
 
-        UserAutoAnswerDto AutoriseUser(UserAutoRequestDto request);
+        UserAutoAnswerDto AutoriseUser(UserAutoRequestDto request, IOptions<SMTPConfig> _options);
 
-        void EmailCodeAuto();
+        bool EmailCodeAuto(EmailAutoDto request);
 
         //TODO: понять как и что правильно передавать
         IEnumerable<TimetableReadAnswerDto> GetSchedulers(TimetableReadRequestDto request);

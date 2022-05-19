@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using TimetableAPI.Dtos;
 using TimetableAPI.Repos;
+using TimetableAPI.Services;
 
 namespace TimetableAPI.Controllers
 {
@@ -13,18 +15,27 @@ namespace TimetableAPI.Controllers
 
         private readonly IClientResponceRepo _repository;
         private readonly IMapper _mapper;
+        private readonly IOptions<SMTPConfig> _options;
 
-        public ClientResponseController(IClientResponceRepo repository, IMapper mapper)
+        public ClientResponseController(IClientResponceRepo repository, IMapper mapper, IOptions<SMTPConfig> options)
         {
             _repository = repository;
             _mapper = mapper;
+            _options = options;
         }
 
 
         [HttpPost("auto")]
         public ActionResult<UserAutoAnswerDto> AutoriseUser(UserAutoRequestDto userAutoRequestDto)
         {
-            var item = _repository.AutoriseUser(userAutoRequestDto);
+            var item = _repository.AutoriseUser(userAutoRequestDto, _options);
+            return Ok(item);
+        }
+
+        [HttpPost("verify")]
+        public ActionResult<UserAutoAnswerDto> VerifyEmail(EmailAutoDto emailAutoDto)
+        {
+            var item = _repository.EmailCodeAuto(emailAutoDto);
             return Ok(item);
         }
 
@@ -57,7 +68,7 @@ namespace TimetableAPI.Controllers
             return Ok();
         }
 
-        [HttpPost("comment")]
+        [HttpPost("totalizer")]
         public ActionResult TotalizerClick(TotalizerUpdateDto totalizerUpdateDto)
         {
             _repository.TotalizerClick(totalizerUpdateDto);
