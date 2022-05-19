@@ -242,6 +242,8 @@ namespace TimetableAPI.Deserializator
                         nameAndDateContent = nameAndDateContent.Insert(136, jsonNewNameAndDate + ",");
                                 
                         File.WriteAllText(nameAndDateJsonString, nameAndDateContent);
+
+                        File.Delete(shedulerJsonString);
                     }
                 //}
             //}
