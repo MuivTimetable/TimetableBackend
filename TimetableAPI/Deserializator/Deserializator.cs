@@ -150,11 +150,6 @@ namespace TimetableAPI.Deserializator
                                         {
                                             var stringGroupID = "1" + sheduler.sheduler[i].workSheduler[j].groups[h];
                                             var intGroupID = Int32.Parse(stringGroupID);
-                                            /*_context.Schedulers_Groups.Add(new Models.Scheduler_Group
-                                            {
-                                                Scheduler_id = schedulerID,
-                                                Group_id = intGroupID
-                                            });*/
                                             
                                             if (_context.Groups.Where(s => s.Group_id.Equals(intGroupID)).Select(s => s.Group_id).Any()) 
                                             {
@@ -168,7 +163,7 @@ namespace TimetableAPI.Deserializator
                                     }
                                 }
                                 _context.SaveChanges();
-
+                                
                                 break;
 
                             case 2:
@@ -213,11 +208,6 @@ namespace TimetableAPI.Deserializator
                                         {
                                             var stringGroupID = "1" + sheduler.sheduler[i].workSheduler[j].groups[h].groupCode;
                                             var intGroupID = int.Parse(stringGroupID);
-                                            /*_context.Schedulers_Groups.Add(new Models.Scheduler_Group
-                                            {
-                                                Scheduler_id = schedulerID,
-                                                Group_id = intGroupID
-                                            });*/
                                             
                                             if (_context.Groups.Where(s => s.Group_id.Equals(intGroupID)).Select(s => s.Group_id).Any()) 
                                             {
@@ -231,12 +221,27 @@ namespace TimetableAPI.Deserializator
                                     }
                                 }
                                 _context.SaveChanges();
+                                
                                 break;
 
                             default:
 
                                 break;
                         }
+                        Nameanddate newNameAndDate = new Nameanddate
+                        {
+                            name = _file.Name,
+                            date = lastWriteTime
+                        };
+                        string jsonNewNameAndDate = JsonConvert.SerializeObject(newNameAndDate);
+
+                        string str = "},";
+                                
+                        string nameAndDateContent = File.ReadAllText(nameAndDateJsonString);
+                        int indexOfString = nameAndDateContent.IndexOf(str);
+                        nameAndDateContent = nameAndDateContent.Insert(136, jsonNewNameAndDate + ",");
+                                
+                        File.WriteAllText(nameAndDateJsonString, nameAndDateContent);
                     }
                 //}
             //}
