@@ -19,7 +19,7 @@ namespace TimetableAPI.Models
         [Required, MaxLength(10)]
         public string Work_end { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string? Area { get; set; }
 
         [MaxLength(10)]

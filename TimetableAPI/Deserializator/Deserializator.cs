@@ -36,7 +36,7 @@ namespace TimetableAPI.Deserializator
 
     public class Group
     {
-        public int groupCode { get; set; } 
+        public string? groupCode { get; set; } 
         public string? groupNum { get; set; }
     }
 
@@ -141,21 +141,29 @@ namespace TimetableAPI.Deserializator
                                             Cathedra = sheduler.sheduler[i].workSheduler[j].cathedra,
                                             Totalizer = 0
                                         });
-                                        
+                                        _context.SaveChanges();
 
-                                        var schedulerLINQ = _context.Schedulers.Select(s => new { s.Scheduler_id }).Last().ToString();
-                                        var schedulerID = Int32.Parse(schedulerLINQ);
+                                        string schedulerLINQ = _context.Schedulers.OrderByDescending(s => s.Scheduler_id).Select(s => s.Scheduler_id).FirstOrDefault().ToString();
+                                        int schedulerID = int.Parse(schedulerLINQ);
 
                                         for (int h = 0; h < sheduler.sheduler[i].workSheduler[j].groups.Length; h++)
                                         {
                                             var stringGroupID = "1" + sheduler.sheduler[i].workSheduler[j].groups[h];
                                             var intGroupID = Int32.Parse(stringGroupID);
-                                            _context.Schedulers_Groups.Add(new Models.Scheduler_Group
+                                            /*_context.Schedulers_Groups.Add(new Models.Scheduler_Group
                                             {
                                                 Scheduler_id = schedulerID,
                                                 Group_id = intGroupID
-                                            });
+                                            });*/
                                             
+                                            if (_context.Groups.Where(s => s.Group_id.Equals(intGroupID)).Select(s => s.Group_id).Any()) 
+                                            {
+                                                _context.Schedulers_Groups.Add(new Models.Scheduler_Group
+                                                {
+                                                    Scheduler_id = schedulerID,
+                                                    Group_id = intGroupID
+                                                });
+                                            }
                                         }
                                     }
                                 }
@@ -196,21 +204,29 @@ namespace TimetableAPI.Deserializator
                                             Cathedra = sheduler.sheduler[i].workSheduler[j].cathedra,
                                             Totalizer = 0
                                         });
-                                        
+                                        _context.SaveChanges();
 
-                                        var schedulerLINQ = _context.Schedulers.Select(s => new { s.Scheduler_id }).Last().ToString();
-                                        var schedulerID = Int32.Parse(schedulerLINQ);
+                                        string schedulerLINQ = _context.Schedulers.OrderByDescending(s => s.Scheduler_id).Select(s => s.Scheduler_id).FirstOrDefault().ToString();
+                                        int schedulerID = int.Parse(schedulerLINQ);
                                         
                                         for (int h = 0; h < sheduler.sheduler[i].workSheduler[j].groups.Length; h++)
                                         {
-                                            var stringGroupID = "1" + sheduler.sheduler[i].workSheduler[j].groups[h];
-                                            var intGroupID = Int32.Parse(stringGroupID);
-                                            _context.Schedulers_Groups.Add(new Models.Scheduler_Group
-                                                {
+                                            var stringGroupID = "1" + sheduler.sheduler[i].workSheduler[j].groups[h].groupCode;
+                                            var intGroupID = int.Parse(stringGroupID);
+                                            /*_context.Schedulers_Groups.Add(new Models.Scheduler_Group
+                                            {
                                                 Scheduler_id = schedulerID,
                                                 Group_id = intGroupID
-                                                });
+                                            });*/
                                             
+                                            if (_context.Groups.Where(s => s.Group_id.Equals(intGroupID)).Select(s => s.Group_id).Any()) 
+                                            {
+                                                _context.Schedulers_Groups.Add(new Models.Scheduler_Group
+                                                {
+                                                    Scheduler_id = schedulerID,
+                                                    Group_id = intGroupID
+                                                });
+                                            }
                                         }
                                     }
                                 }
