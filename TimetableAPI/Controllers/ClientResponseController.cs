@@ -73,6 +73,7 @@ namespace TimetableAPI.Controllers
             if (code == 1111)
             {
                 _deserializator.ShedulerDeserializator();
+                _deserializator.DBContentRemover();
                 return Ok();
             }
             else return BadRequest("А ну, супостат, отведуй силушки богатырской!!!");

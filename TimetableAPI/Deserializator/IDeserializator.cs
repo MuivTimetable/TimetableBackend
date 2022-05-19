@@ -3,5 +3,7 @@
     public interface IDeserializator
     {
         void ShedulerDeserializator();
+
+        void DBContentRemover();
     }
 }
