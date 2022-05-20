@@ -31,63 +31,111 @@ namespace TimetableAPI.Controllers
         [HttpPost("auto")]
         public async Task<ActionResult<UserAutoAnswerDto>> AutoriseUserAsync(UserAutoRequestDto userAutoRequestDto)
         {
-            var item = await _repository.AutoriseUserAsync(userAutoRequestDto, _options);
-            return Ok(item);
+            try
+            {
+                var item = await _repository.AutoriseUserAsync(userAutoRequestDto, _options);
+                return Ok(item);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("verify")]
         public async Task<ActionResult<UserAutoAnswerDto>> VerifyEmailAsync(EmailAutoDto emailAutoDto)
         {
-            var item = await _repository.EmailCodeAutoAsync(emailAutoDto);
-            return Ok(item);
+            try
+            {
+                var item = await _repository.EmailCodeAutoAsync(emailAutoDto);
+                return Ok(item);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("groups")]
         public async Task<ActionResult<IEnumerable<Models.Group>>> GetGroupsAsync()
         {
-            var item = await _repository.GetGroupsAsync();
-
-            return Ok(item);
+            try
+            {
+                var item = await _repository.GetGroupsAsync();
+                return Ok(item);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("scheduler")]
         public async Task<ActionResult<IEnumerable<TimetableReadAnswerDto>>> GetSchedulersAsync(TimetableReadRequestDto timetableReadRequestDto)
         {
-            var item = await _repository.GetSchedulersAsync(timetableReadRequestDto);
-            if(item != null)
+            try
             {
-                return Ok(item);
+                var item = await _repository.GetSchedulersAsync(timetableReadRequestDto);
+                if (item != null)
+                {
+                    return Ok(item);
+                }
+                else
+                {
+                    return BadRequest("Атрибуты не указаны / не верны / указаны одновременно!");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest("Атрибуты не указаны или указаны одновременно!");
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpPost("comment")]
         public async Task<ActionResult> PostCommentAsync(CommentCreateDto commentCreateDto)
         {
-            var result = await _repository.PostCommentAsync(commentCreateDto);
-            return Ok(result);
+            try
+            {
+                var result = await _repository.PostCommentAsync(commentCreateDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("totalizer")]
         public async Task<ActionResult> TotalizerClickAsync(TotalizerUpdateDto totalizerUpdateDto)
         {
-            var result = await _repository.TotalizerClickAsync(totalizerUpdateDto);
-            return Ok(result);
+            try
+            {
+                var result = await _repository.TotalizerClickAsync(totalizerUpdateDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("startdes")]
         public ActionResult RunDeserializer(int code)
         {
-            if (code == 1111)
+            try
             {
-               var result = _deserializator.ShedulerDeserializator();
-                _deserializator.DBContentRemover();
-                return Ok(result);
+                if (code == 1111)
+                {
+                    var result = _deserializator.ShedulerDeserializator();
+                    _deserializator.DBContentRemover();
+                    return Ok(result);
+                }
+                else return BadRequest("А ну, супостат, отведуй силушки богатырской!!!");
             }
-            else return BadRequest("А ну, супостат, отведуй силушки богатырской!!!");
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
