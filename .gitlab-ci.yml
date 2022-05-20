@@ -28,11 +28,8 @@ deploy-job:
     - pwd
     - echo "${PUBLISH_DIR}/* ${DEST_DIR_PATH}/${PUBLISH_DIR}/"
     - sudo cp -r ${PUBLISH_DIR}/* ${DEST_DIR_PATH}/${PUBLISH_DIR}/
-    - sudo cp -r ${PROPERTIES_DIR_PATH}/* ${DEST_DIR_PATH}/${PROPERTIES_DIR_PATH}/
     - sudo chown -R ${USER}:${GROUP} ${DEST_DIR_PATH}
     - sudo chmod 664 ${DEST_DIR_PATH}/${DLL_FILE_PATH}
-    - sudo chmod 774 ${DEST_DIR_PATH}/${PROPERTIES_DIR_PATH}
-    - sudo chmod 664 ${DEST_DIR_PATH}/${PROPERTIES_DIR_PATH}/*
     - echo "Application successfully deployed."
   
 post-deploy-job:      
