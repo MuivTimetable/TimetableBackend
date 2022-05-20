@@ -1,0 +1,43 @@
+# This file is a template, and might need editing before it works on your project.
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
+
+# This is a sample GitLab CI/CD configuration file that should run without any modifications.
+# It demonstrates a basic 3 stage CI/CD pipeline. Instead of real tests or scripts,
+# it uses echo commands to simulate the pipeline execution.
+#
+# A pipeline is composed of independent jobs that run scripts, grouped into stages.
+# Stages run in sequential order, but jobs within stages run in parallel.
+#
+# For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
+
+stages:          
+  - deploy
+  - post-deploy
+
+deploy-job:      
+  stage: deploy  
+  tags: ['master', 'main', 'shell']
+  script:
+    - echo "Deploying application..."
+    - cd ${CI_BUILDS_DIR}/${RUNNER_ID}/${BUILD_ID}/${GITLAB_PROJECT_NAME}/${PROJECT_NAME}/${PROJECT_ROOT_DIR}
+    - dotnet publish
+    - sudo mkdir -p ${DEST_DIR_PATH}/${PUBLISH_DIR}
+    - sudo cp -r ${PUBLISH_DIR}/* ${DEST_DIR_PATH}/${PUBLISH_DIR}/
+    - sudo cp -r ${PROPERTIES_DIR_PATH}/* ${DEST_DIR_PATH}/${PROPERTIES_DIR_PATH}/
+    - sudo chown -R ${USER}:${GROUP} ${DEST_DIR_PATH}
+    - sudo chmod 664 ${DEST_DIR_PATH}/${DLL_FILE_PATH}
+    - sudo chmod 774 ${DEST_DIR_PATH}/${PROPERTIES_DIR_PATH}
+    - sudo chmod 664 ${DEST_DIR_PATH}/${PROPERTIES_DIR_PATH}/*
+    - echo "Application successfully deployed."
+  
+post-deploy-job:      
+  stage: post-deploy  
+  tags: ['master', 'main', 'shell']
+  script:
+    - echo "Executing post-deploy routines..."
+    - sudo systemctl daemon-reload
+    - sudo systemctl restart ${KESTREL_SERVICE_NAME}
+    - echo "Done."
