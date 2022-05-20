@@ -130,7 +130,7 @@ namespace TimetableAPI.Controllers
                     _deserializator.DBContentRemover();
                     return Ok(result);
                 }
-                else return BadRequest("А ну, супостат, отведуй силушки богатырской!!!");
+                else return BadRequest("А ну, супостат, отведуй силушки богатырской!!!!");
             }
             catch (Exception ex)
             {
