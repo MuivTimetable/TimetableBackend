@@ -16,20 +16,20 @@ namespace TimetableAPI.Repos
             rand = new Random();
         }
 
-        public UserAutoAnswerDto AutoriseUser(UserAutoRequestDto request, IOptions<SMTPConfig> _options)
+        public async Task<UserAutoAnswerDto> AutoriseUserAsync(UserAutoRequestDto request, IOptions<SMTPConfig> _options)
         {
             var user = new UserAutoAnswerDto();
 
-            if (_context.Users.Where(s => s.Login.Equals(request.Login) && s.Password.Equals(request.Password)).Select(s => s.User_id).Any())
+            if (await _context.Users.Where(s => s.Login.Equals(request.Login) && s.Password.Equals(request.Password)).Select(s => s.User_id).AnyAsync())
             {
-                if(!_context.Users.Where(s => s.Login.Equals(request.Login) && s.Password.Equals(request.Password)).Select(s => s.Token).Contains(null))
+                if(! await _context.Users.Where(s => s.Login.Equals(request.Login) && s.Password.Equals(request.Password)).Select(s => s.Token).ContainsAsync(null))
                 {
                     user.AnswerOption = 0;
                     user.IdentityToken = null;
                 }
                 else
                 {
-                    User dbUser = _context.Users.Where(s => s.Login.Equals(request.Login) && s.Password.Equals(request.Password)).FirstOrDefault();
+                    User dbUser = await _context.Users.Where(s => s.Login.Equals(request.Login) && s.Password.Equals(request.Password)).FirstOrDefaultAsync();
                     user.AnswerOption = 3;
                     var preToken = DateTime.Now.ToString().ToCharArray();
                     StringBuilder token = new StringBuilder();
@@ -46,7 +46,7 @@ namespace TimetableAPI.Repos
                     var sender = new SMTPSender();
                     sender.Send(dbUser.Email, (int)dbUser.AuthCode, _options);
 
-                    SaveChanges();
+                    await SaveChangesAsync();
                 }
             }
             else
@@ -58,10 +58,10 @@ namespace TimetableAPI.Repos
             return user;
         }
 
-        public bool EmailCodeAuto(EmailAutoDto request)
+        public async Task<bool> EmailCodeAutoAsync(EmailAutoDto request)
         {
 
-            var user = _context.Users.Where(s => s.Token.Equals(request.Token)).FirstOrDefault();
+            var user = await _context.Users.Where(s => s.Token.Equals(request.Token)).FirstOrDefaultAsync();
 
             if(user == null)
             {
@@ -71,23 +71,23 @@ namespace TimetableAPI.Repos
             if (user.AuthCode.Equals(request.EmailCode))
             {
                 user.AuthCode = null;
-                SaveChanges();
+                await SaveChangesAsync();
                 return true;
             }
 
             user.AuthCode = null;
             user.Token = null;
 
-            SaveChanges();
+            await SaveChangesAsync();
             return false;
         }
 
-        public IEnumerable<Group> GetGroups()
+        public async Task<IEnumerable<Group>> GetGroupsAsync()
         {
-            return _context.Groups.ToList();
+            return await _context.Groups.ToListAsync();
         }
 
-        public IEnumerable<TimetableReadAnswerDto> GetSchedulers(TimetableReadRequestDto request)
+        public async Task<IEnumerable<TimetableReadAnswerDto>> GetSchedulersAsync(TimetableReadRequestDto request)
         {
             int? groupId;
 
@@ -101,7 +101,7 @@ namespace TimetableAPI.Repos
 
             if (request.Token != null)
             {
-                groupId = _context.Users.Where(s => s.Token.Equals(request.Token)).Select(s => s.Group_id).FirstOrDefault();
+                groupId = await _context.Users.Where(s => s.Token.Equals(request.Token)).Select(s => s.Group_id).FirstOrDefaultAsync();
 
                 if (groupId == null) return null;
             }
@@ -109,7 +109,7 @@ namespace TimetableAPI.Repos
             {
                 groupId = request.Group_id;
 
-                if (_context.Groups.Where(s => s.Group_id.Equals(groupId)).FirstOrDefault() == null) return null;            
+                if (await _context.Groups.Where(s => s.Group_id.Equals(groupId)).FirstOrDefaultAsync() == null) return null;            
             }
 
             var monday = DateTime.Now;
@@ -121,11 +121,11 @@ namespace TimetableAPI.Repos
 
             while(monday.DayOfWeek != DayOfWeek.Sunday)
             {
-                var schedulerDay = _context.SchedulerDates.Where
+                var schedulerDay = await _context.SchedulerDates.Where
                     (s => s.Work_Year.Equals(monday.Year) 
                     && s.Work_Month.Equals(monday.Month) 
                     && s.Work_Day.Equals(monday.Day))
-                    .FirstOrDefault();
+                    .FirstOrDefaultAsync();
 
                 if (schedulerDay == null)
                 {
@@ -147,16 +147,16 @@ namespace TimetableAPI.Repos
                     DayOfTheWeek = monday.DayOfWeek.ToString()
                 };
 
-                var couplesId = _context.Schedulers_Groups.
+                var couplesId = await _context.Schedulers_Groups.
                     Join(_context.Schedulers, s => s.Scheduler_id, p => p.Scheduler_id, (s,p) => new {group = s.Group_id, id = p.Scheduler_id}).
                     Where(s => s.group.Equals(groupId)).
-                    ToList();
+                    ToListAsync();
 
                 var schedulers = new SchedulersInDays[couplesId.Count];
 
                 for (int i=0; i < couplesId.Count; i++)
                 {
-                    var couple = _context.Schedulers.Where(s => s.Scheduler_id.Equals(couplesId[i].id)).FirstOrDefault();
+                    var couple = await _context.Schedulers.Where(s => s.Scheduler_id.Equals(couplesId[i].id)).FirstOrDefaultAsync();
 
                     var schedulerItem = new SchedulersInDays()
                     {
@@ -193,14 +193,14 @@ namespace TimetableAPI.Repos
             return (answer);
         }
 
-        public void PostComment(CommentCreateDto comment)
+        public async Task<bool> PostCommentAsync(CommentCreateDto comment)
         {
 
-            var user = _context.Users.Where(s => s.Token.Equals(comment.Token)).FirstOrDefault();
+            var user = await _context.Users.Where(s => s.Token.Equals(comment.Token)).FirstOrDefaultAsync();
 
             if (user == null)
             {
-                return;
+                return false;
             }
 
             switch (user.Permission_id)
@@ -208,7 +208,7 @@ namespace TimetableAPI.Repos
             {
                 case 2:
                 case 3:
-                    var scheduler = _context.Schedulers.Where(s => s.Scheduler_id.Equals(comment.Scheduler_id)).FirstOrDefault();
+                    var scheduler = await _context.Schedulers.Where(s => s.Scheduler_id.Equals(comment.Scheduler_id)).FirstOrDefaultAsync();
 
                     if (scheduler == null)
                     {
@@ -218,18 +218,20 @@ namespace TimetableAPI.Repos
                     scheduler.Comment = comment.Comment;
                     break;
 
-                default: return;
+                default: return false;
             }
 
-            SaveChanges();
+            await SaveChangesAsync();
+
+            return true;
         }
 
-        public void TotalizerClick(TotalizerUpdateDto totalizer)
+        public async Task<bool> TotalizerClickAsync(TotalizerUpdateDto totalizer)
         {
-            var user = _context.Users.Where(s => s.Token.Equals(totalizer.Token)).FirstOrDefault();
+            var user = await _context.Users.Where(s => s.Token.Equals(totalizer.Token)).FirstOrDefaultAsync();
             if (user == null)
             {
-                return;
+                return false;
             }
 
             switch (user.Permission_id)
@@ -238,7 +240,7 @@ namespace TimetableAPI.Repos
                 case 2:
                     for (int i = 0; i < totalizer.Scheduler_id.Length; i++)
                     {
-                        var scheduler = _context.Schedulers.Where(s => s.Scheduler_id.Equals(totalizer.Scheduler_id[i])).FirstOrDefault();
+                        var scheduler = await _context.Schedulers.Where(s => s.Scheduler_id.Equals(totalizer.Scheduler_id[i])).FirstOrDefaultAsync();
 
                         if(scheduler == null)
                         {
@@ -257,15 +259,60 @@ namespace TimetableAPI.Repos
                     }
                     break;
 
-                default: return;
+                default: return false;
             }
 
-            SaveChanges();
+            await SaveChangesAsync();
+
+            return true;
         }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return await (_context.SaveChangesAsync()) >= 0;
+        }
+
+
+        //Sync methods:
 
         public bool SaveChanges()
         {
-            return (_context.SaveChanges()) >= 0;
+            throw new NotImplementedException();
+        }
+
+        public UserAutoAnswerDto AutoriseUser(UserAutoRequestDto request, IOptions<SMTPConfig> _options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool EmailCodeAuto(EmailAutoDto request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<TimetableReadAnswerDto> GetSchedulers(TimetableReadRequestDto request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PostComment(CommentCreateDto comment)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool TotalizerClick(TotalizerUpdateDto totalizer)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Group> GetGroups()
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IClientResponceRepo.SaveChangesAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

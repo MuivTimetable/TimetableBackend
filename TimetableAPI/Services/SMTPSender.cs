@@ -17,23 +17,25 @@ namespace TimetableAPI.Services
             
             message.Body = new TextPart("plain") { Text = code.ToString() };
 
-            SmtpClient client = new SmtpClient();
-            try
+            using (SmtpClient client = new SmtpClient())
             {
-                client.Connect("smtp.gmail.com", 465, true);
-                client.Authenticate(_options.Value.EmailAdress, _options.Value.Password);
-                client.Send(message);
-            }
-            catch (Exception ex)
-            {
+                try
+                {
+                    client.Connect(_options.Value.Host, _options.Value.Port, _options.Value.SSL);
+                    client.Authenticate(_options.Value.EmailAdress, _options.Value.Password);
+                    client.Send(message);
+                }
+                catch (Exception ex)
+                {
 
+                }
+                finally
+                {
+                    client.Disconnect(true);
+                    client.Dispose();
+                }
+                return;
             }
-            finally
-            {
-                client.Disconnect(true);
-                client.Dispose();
-            }
-            return;
         }
     }
 }

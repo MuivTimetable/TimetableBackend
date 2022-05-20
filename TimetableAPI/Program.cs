@@ -1,3 +1,4 @@
+using TimetableAPI.Deserializator;
 using TimetableAPI.Repos;
 using TimetableAPI.Services;
 
@@ -10,6 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IClientResponceRepo, ClientResponceRepo>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<IDeserializator, Deserializator>();
 
 builder.Services.Configure<SMTPConfig>(builder.Configuration.GetSection("SMTPConfig"));
 
@@ -45,3 +48,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
