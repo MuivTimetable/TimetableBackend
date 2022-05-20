@@ -45,8 +45,3 @@ app.MapControllers();
 
 app.Run();
 
-//var deserializator = new Deserializator();
-
-//deserializator.ShedulerDeserializator();
-
-

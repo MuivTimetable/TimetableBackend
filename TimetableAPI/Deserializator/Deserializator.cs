@@ -80,8 +80,14 @@ namespace TimetableAPI.Deserializator
         protected bool cycleIsTrue = true;
         public void ShedulerDeserializator()
         {
-
+            
             string? _debugPath = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+
+            if (!Directory.Exists(_debugPath + "/NameAndDate") && !Directory.Exists(_debugPath + "/sheduler"))
+            {
+                Directory.CreateDirectory(_debugPath + "/NameAndDate");
+                Directory.CreateDirectory(_debugPath + "/sheduler");
+            }
 
             string nameAndDateJsonString = _debugPath + "/NameAndDate/Nameanddate.json";
             var nameAndDate = JsonConvert.DeserializeObject<Rootnameanddate>(File.ReadAllText(nameAndDateJsonString));
@@ -91,6 +97,7 @@ namespace TimetableAPI.Deserializator
             {
                 if (DateTime.UtcNow.Minute == 0 && DateTime.UtcNow.Second == 0)
                 {*/
+            
             foreach (FileInfo _file in _dirPath.GetFiles())
             {
                 string shedulerJsonString = _debugPath + "/sheduler/" + _file.Name;
@@ -104,7 +111,7 @@ namespace TimetableAPI.Deserializator
                         {
                             awaitAccord = 1;
                         }
-                        break;
+                        else if (lastWriteTime == nameAndDate.nameAndDate[i].date) { awaitAccord = 0; }break;
                     }
                     else
                     {
@@ -123,9 +130,17 @@ namespace TimetableAPI.Deserializator
                             string stringActualDayId = Convert.ToString(sheduler.sheduler[i].workDate) + Convert.ToString(sheduler.sheduler[i].workMonth) + Convert.ToString(sheduler.sheduler[i].workYear);
                             int intActualDayID = Int32.Parse(stringActualDayId);
 
-                            var deleteContent = _context.Schedulers.Where(k => k.Day_id == intActualDayID).ToList();
-                            _context.Schedulers.RemoveRange(deleteContent);
-
+                            var deleteContent = _context.SchedulerDates.Where(k => k.Day_id == intActualDayID).ToList();
+                            _context.SchedulerDates.RemoveRange(deleteContent);
+                            _context.SchedulerDates.Add(new Models.SchedulerDate
+                            {
+                                Day_id = intActualDayID,
+                                Work_Date_Name = sheduler.sheduler[i].workDateName,
+                                Work_Day = sheduler.sheduler[i].workDate,
+                                Work_Month = sheduler.sheduler[i].workMonth,
+                                Work_Year = sheduler.sheduler[i].workYear
+                            });
+                            _context.SaveChanges();
                             for (int j = 0; j < sheduler.sheduler[i].workSheduler.Length; j++)
                             {
 
@@ -149,7 +164,7 @@ namespace TimetableAPI.Deserializator
 
                                 for (int h = 0; h < sheduler.sheduler[i].workSheduler[j].groups.Length; h++)
                                 {
-                                    var stringGroupID = "1" + sheduler.sheduler[i].workSheduler[j].groups[h];
+                                    var stringGroupID = "1" + sheduler.sheduler[i].workSheduler[j].groups[h].groupCode;
                                     var intGroupID = Int32.Parse(stringGroupID);
 
                                     if (_context.Groups.Where(s => s.Group_id.Equals(intGroupID)).Select(s => s.Group_id).Any())
