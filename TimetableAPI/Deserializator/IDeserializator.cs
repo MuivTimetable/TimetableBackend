@@ -2,6 +2,8 @@
 {
     public interface IDeserializator
     {
-        void ShedulerDeserializator();
+        string ShedulerDeserializator();
+
+        void DBContentRemover();
     }
 }

@@ -11,8 +11,8 @@ using TimetableAPI;
 namespace TimetableAPI.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220515152320_AddTimetableMigration")]
-    partial class AddTimetableMigration
+    [Migration("20220520001204_AddSchedulerMigration")]
+    partial class AddSchedulerMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,8 +45,8 @@ namespace TimetableAPI.Migrations
 
                     b.Property<string>("Permission_name")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
 
                     b.HasKey("Permission_id");
 
@@ -82,17 +82,15 @@ namespace TimetableAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Area")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Branch")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Cathedra")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("Comment")
                         .HasMaxLength(250)
@@ -102,29 +100,28 @@ namespace TimetableAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Place")
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("Totalizer")
                         .HasColumnType("int");
 
                     b.Property<string>("Tutor")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("Work_end")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)");
 
                     b.Property<string>("Work_start")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)");
 
                     b.Property<string>("Work_type")
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)");
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)");
 
                     b.HasKey("Scheduler_id");
 
@@ -196,8 +193,8 @@ namespace TimetableAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("Password")
                         .IsRequired()

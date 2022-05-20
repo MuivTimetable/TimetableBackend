@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TimetableAPI.Migrations
 {
-    public partial class AddTimetableMigration : Migration
+    public partial class AddSchedulerMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,7 +34,7 @@ namespace TimetableAPI.Migrations
                 {
                     Permission_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Permission_name = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false)
+                    Permission_name = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -84,7 +84,7 @@ namespace TimetableAPI.Migrations
                 {
                     User_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Login = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -121,21 +121,21 @@ namespace TimetableAPI.Migrations
                     Scheduler_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Day_id = table.Column<int>(type: "int", nullable: false),
-                    Branch = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                    Branch = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Work_start = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
+                    Work_start = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Work_end = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
+                    Work_end = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Area = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
+                    Area = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Work_type = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true)
+                    Work_type = table.Column<string>(type: "varchar(30)", maxLength: 30, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Place = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true)
+                    Place = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Tutor = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
+                    Tutor = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cathedra = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
+                    Cathedra = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Comment = table.Column<string>(type: "varchar(250)", maxLength: 250, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),

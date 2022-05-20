@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using TimetableAPI.Deserializator;
 using TimetableAPI.Dtos;
 using TimetableAPI.Repos;
 using TimetableAPI.Services;
@@ -16,12 +17,14 @@ namespace TimetableAPI.Controllers
         private readonly IClientResponceRepo _repository;
         private readonly IMapper _mapper;
         private readonly IOptions<SMTPConfig> _options;
+        private readonly IDeserializator _deserializator;
 
-        public ClientResponseController(IClientResponceRepo repository, IMapper mapper, IOptions<SMTPConfig> options)
+        public ClientResponseController(IClientResponceRepo repository, IMapper mapper, IOptions<SMTPConfig> options, IDeserializator deserializator)
         {
             _repository = repository;
             _mapper = mapper;
             _options = options;
+            _deserializator = deserializator;
         }
 
 
@@ -40,11 +43,11 @@ namespace TimetableAPI.Controllers
         }
 
         [HttpGet("groups")]
-        public ActionResult<IEnumerable<Group>> GetGroups()
+        public ActionResult<IEnumerable<Models.Group>> GetGroups()
         {
             var item = _repository.GetGroups();
 
-            return Ok(_mapper.Map<IEnumerable<GroupReadDto>>(item));
+            return Ok(item);
         }
 
         [HttpPost("scheduler")]
@@ -73,6 +76,18 @@ namespace TimetableAPI.Controllers
         {
             _repository.TotalizerClick(totalizerUpdateDto);
             return Ok();
+        }
+
+        [HttpGet("startdes")]
+        public ActionResult RunDeserializer(int code)
+        {
+            if (code == 1111)
+            {
+               var result = _deserializator.ShedulerDeserializator();
+                _deserializator.DBContentRemover();
+                return Ok(result);
+            }
+            else return BadRequest("А ну, супостат, отведуй силушки богатырской!!!");
         }
     }
 }

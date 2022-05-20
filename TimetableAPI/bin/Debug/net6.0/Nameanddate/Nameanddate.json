@@ -1,12 +1,12 @@
 {
-    "nameAndDate":[
+    "nameAndDate": [
         {
-            "name" : "shedulerDataTest.json",
-            "date" : "2008-03-09T16:05:07"
-        },{"name":"shedulerData23.05.22_29.05.22.json","date":"18.05.2022 11:43:03"},
+            "name": "shedulerDataTest.json",
+            "date": "2008-03-09T16:05:07"
+        },{"name":"shedulerData06.06.22_12.06.22.json","date":"20.05.2022 4:19:51"},{"name":"shedulerData06.06.22_12.06.22.json","date":"20.05.2022 2:31:38"},{"name":"shedulerData06.06.22_12.06.22.json","date":"20.05.2022 2:31:38"},{"name":"shedulerData30.05.22_05.06.22.json","date":"20.05.2022 2:31:39"},{"name":"shedulerData23.05.22_29.05.22.json","date":"20.05.2022 2:31:38"},{"name":"shedulerData16.05.22_22.05.22.json","date":"20.05.2022 2:31:39"},{"name":"shedulerData13.06.22_19.06.22.json","date":"20.05.2022 2:31:38"},{"name":"shedulerData06.06.22_12.06.22.json","date":"20.05.2022 2:31:38"},{"name":"shedulerData02.05.22_08.05.22.json","date":"20.05.2022 2:31:38"},
         {
-            "name" :"shedulerDataTest2.json",
-            "date" :"2008-03-09T17:05:07"
+            "name": "shedulerDataTest2.json",
+            "date": "2008-03-09T17:05:07"
         }
     ]
 }
