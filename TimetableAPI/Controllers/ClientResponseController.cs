@@ -9,7 +9,7 @@ using TimetableAPI.Services;
 
 namespace TimetableAPI.Controllers
 {
-    [Route("api/crc")]
+    [Route("api")]
     [ApiController]
     public class ClientResponseController : ControllerBase
     {

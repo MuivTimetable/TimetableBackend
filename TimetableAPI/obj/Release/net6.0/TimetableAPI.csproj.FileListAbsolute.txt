@@ -38,3 +38,4 @@ R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\obj\Releas
 R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\obj\Release\net6.0\ref\TimetableAPI.dll
 R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\obj\Release\net6.0\TimetableAPI.pdb
 R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\obj\Release\net6.0\TimetableAPI.genruntimeconfig.cache
+R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Release\net6.0\Newtonsoft.Json.dll
