@@ -12,14 +12,29 @@ namespace TimetableAPI.Repos
 
         bool EmailCodeAuto(EmailAutoDto request);
 
-        //TODO: понять как и что правильно передавать
         IEnumerable<TimetableReadAnswerDto> GetSchedulers(TimetableReadRequestDto request);
 
         void PostComment(CommentCreateDto comment);
 
-        void TotalizerClick(TotalizerUpdateDto totalizer);
+        bool TotalizerClick(TotalizerUpdateDto totalizer);
 
         IEnumerable<Group> GetGroups();
+
+        //Async methods:
+
+        bool SaveChangesAsync();
+
+        Task<UserAutoAnswerDto> AutoriseUserAsync(UserAutoRequestDto request, IOptions<SMTPConfig> _options);
+
+        Task<bool> EmailCodeAutoAsync(EmailAutoDto request);
+
+        Task<IEnumerable<TimetableReadAnswerDto>> GetSchedulersAsync(TimetableReadRequestDto request);
+
+        Task<bool> PostCommentAsync(CommentCreateDto comment);
+
+        Task<bool> TotalizerClickAsync(TotalizerUpdateDto totalizer);
+
+        Task<IEnumerable<Group>> GetGroupsAsync();
 
     }
 }

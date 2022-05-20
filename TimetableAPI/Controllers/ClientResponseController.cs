@@ -29,31 +29,31 @@ namespace TimetableAPI.Controllers
 
 
         [HttpPost("auto")]
-        public ActionResult<UserAutoAnswerDto> AutoriseUser(UserAutoRequestDto userAutoRequestDto)
+        public async Task<ActionResult<UserAutoAnswerDto>> AutoriseUserAsync(UserAutoRequestDto userAutoRequestDto)
         {
-            var item = _repository.AutoriseUser(userAutoRequestDto, _options);
+            var item = await _repository.AutoriseUserAsync(userAutoRequestDto, _options);
             return Ok(item);
         }
 
         [HttpPost("verify")]
-        public ActionResult<UserAutoAnswerDto> VerifyEmail(EmailAutoDto emailAutoDto)
+        public async Task<ActionResult<UserAutoAnswerDto>> VerifyEmailAsync(EmailAutoDto emailAutoDto)
         {
-            var item = _repository.EmailCodeAuto(emailAutoDto);
+            var item = await _repository.EmailCodeAutoAsync(emailAutoDto);
             return Ok(item);
         }
 
         [HttpGet("groups")]
-        public ActionResult<IEnumerable<Models.Group>> GetGroups()
+        public async Task<ActionResult<IEnumerable<Models.Group>>> GetGroupsAsync()
         {
-            var item = _repository.GetGroups();
+            var item = await _repository.GetGroupsAsync();
 
             return Ok(item);
         }
 
         [HttpPost("scheduler")]
-        public ActionResult<IEnumerable<TimetableReadAnswerDto>> GetSchedulers(TimetableReadRequestDto timetableReadRequestDto)
+        public async Task<ActionResult<IEnumerable<TimetableReadAnswerDto>>> GetSchedulersAsync(TimetableReadRequestDto timetableReadRequestDto)
         {
-            var item = _repository.GetSchedulers(timetableReadRequestDto);
+            var item = await _repository.GetSchedulersAsync(timetableReadRequestDto);
             if(item != null)
             {
                 return Ok(item);
@@ -65,17 +65,17 @@ namespace TimetableAPI.Controllers
         }
 
         [HttpPost("comment")]
-        public ActionResult PostComment(CommentCreateDto commentCreateDto)
+        public async Task<ActionResult> PostCommentAsync(CommentCreateDto commentCreateDto)
         {
-            _repository.PostComment(commentCreateDto);
-            return Ok();
+            var result = await _repository.PostCommentAsync(commentCreateDto);
+            return Ok(result);
         }
 
         [HttpPost("totalizer")]
-        public ActionResult TotalizerClick(TotalizerUpdateDto totalizerUpdateDto)
+        public async Task<ActionResult> TotalizerClickAsync(TotalizerUpdateDto totalizerUpdateDto)
         {
-            _repository.TotalizerClick(totalizerUpdateDto);
-            return Ok();
+            var result = await _repository.TotalizerClickAsync(totalizerUpdateDto);
+            return Ok(result);
         }
 
         [HttpGet("startdes")]
