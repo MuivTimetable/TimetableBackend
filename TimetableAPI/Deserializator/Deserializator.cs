@@ -82,7 +82,7 @@ namespace TimetableAPI.Deserializator
 
             string? _debugPath = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
 
-            string deepLevel = "/../../../../../../data/sheduler";
+            string deepLevel = "/../../../../../..";
 
             if (!Directory.Exists(_debugPath + deepLevel + "/NameAndDate"))
             {
