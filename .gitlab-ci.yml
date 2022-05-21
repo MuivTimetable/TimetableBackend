@@ -23,10 +23,7 @@ deploy-job:
   script:
     - echo "Deploying application..."
     - cd ${CI_BUILDS_DIR}/${RUNNER_ID}/${BUILD_ID}/${GITLAB_PROJECT_NAME}/${PROJECT_NAME}/${PROJECT_ROOT_DIR}
-    - dotnet add package Pomelo.EntityFrameworkCore.MySql
-    - sudo grep -r "Документы"
-    - sudo rm obj/Release/net6.0/TimetableAPI.csproj.FileListAbsolute.txt
-    - sudo grep -r "Документы"
+    # - dotnet add package Pomelo.EntityFrameworkCore.MySql
     - dotnet publish
     - sudo rm -r ${DEST_DIR_PATH}/${PUBLISH_DIR} || true
     - sudo mkdir -p ${DEST_DIR_PATH}/${PUBLISH_DIR}
