@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using TimetableAPI.Deserializator;
 using TimetableAPI.Repos;
 using TimetableAPI.Services;
@@ -27,6 +28,8 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
+
+Debug.WriteLine($"\nConnectionString: {connectionString}\n");
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
