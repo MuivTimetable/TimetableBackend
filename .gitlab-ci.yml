@@ -30,6 +30,7 @@ deploy-job:
     - pwd
     - echo "${PUBLISH_DIR}/* ${DEST_DIR_PATH}/${PUBLISH_DIR}/"
     - sudo cp -r ${PUBLISH_DIR}/* ${DEST_DIR_PATH}/${PUBLISH_DIR}/
+    - sudo cp -r *.json ${DEST_DIR_PATH}/
     - sudo chown -R ${USER}:${GROUP} ${DEST_DIR_PATH}
     - sudo chmod 664 ${DEST_DIR_PATH}/${DLL_FILE_PATH}
     - echo "${DEST_DIR_PATH}/${DLL_FILE_PATH}"
