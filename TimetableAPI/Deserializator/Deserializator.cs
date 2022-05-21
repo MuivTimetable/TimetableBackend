@@ -79,26 +79,57 @@ namespace TimetableAPI.Deserializator
         protected bool cycleIsTrue = true;
         public string ShedulerDeserializator()
         {
-             
+
             string? _debugPath = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
 
-            if (!Directory.Exists(_debugPath + "/NameAndDate") && !Directory.Exists(_debugPath + "/sheduler"))
+            string deepLevel = "/../../../../../../data/sheduler";
+
+            if (!Directory.Exists(_debugPath + deepLevel + "/NameAndDate"))
             {
-                Directory.CreateDirectory(_debugPath + "/NameAndDate");
-                Directory.CreateDirectory(_debugPath + "/sheduler");
+                Directory.CreateDirectory(_debugPath + deepLevel + "/NameAndDate");
+            }
+            if (!Directory.Exists(_debugPath + deepLevel + "/sheduler"))
+            {
+                Directory.CreateDirectory(_debugPath + deepLevel + "/sheduler");
+            }
+            if (!File.Exists($"{_debugPath}{deepLevel}/NameAndDate/Nameanddate.json"))
+            {
+                var nameanddateJoson = new Rootnameanddate
+                {
+                    nameAndDate = new Nameanddate[]
+                    {
+                        new Nameanddate()
+                        {
+                            name = "shedulerDataTest.json",
+                            date = "2008-03-09T16:05:07"
+                        },
+                        new Nameanddate()
+                        {
+                            name = "shedulerDataTest2.json",
+                            date = "2008-03-09T17:05:07"
+                        }
+                    }
+                };
+                using (var stream = new FileStream($"{_debugPath}{deepLevel}/NameAndDate/Nameanddate.json", FileMode.OpenOrCreate))
+                {
+                    using( var sw = new StreamWriter(stream))
+                    {
+                        sw.Write(JsonConvert.SerializeObject(nameanddateJoson));
+                    }
+                }
             }
 
-            string nameAndDateJsonString = _debugPath + "/NameAndDate/Nameanddate.json";
+            string nameAndDateJsonString = _debugPath + deepLevel + "/NameAndDate/Nameanddate.json";
             var nameAndDate =JsonConvert.DeserializeObject<Rootnameanddate>(File.ReadAllText(nameAndDateJsonString));
 
-            DirectoryInfo _dirPath = new DirectoryInfo(_debugPath + "/sheduler");
+            DirectoryInfo _dirPath = new DirectoryInfo(_debugPath + deepLevel + "/sheduler");
             /*while (cycleIsTrue == true)
             {
                 if (DateTime.UtcNow.Minute == 0 && DateTime.UtcNow.Second == 0)
                 {*/
                     foreach (FileInfo _file in _dirPath.GetFiles())
                     {
-                        string shedulerJsonString = _debugPath + "/sheduler/" + _file.Name;
+                        string shedulerJsonString = _debugPath + deepLevel + "/sheduler/" + _file.Name;
                         Rootobject? sheduler = JsonConvert.DeserializeObject<Rootobject>(File.ReadAllText(shedulerJsonString));
                         string lastWriteTime = _file.LastWriteTime.ToString();
                         for (int i = 0; i < nameAndDate.nameAndDate.Length; i++)
