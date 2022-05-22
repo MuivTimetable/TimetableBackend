@@ -80,8 +80,10 @@ namespace TimetableAPI.Deserializator
         public string ShedulerDeserializator()
         {
 
-            string? _debugPath = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+            string? _debugPath = Path.GetDirectoryName(@AppDomain.CurrentDomain.BaseDirectory);
 
+            _debugPath = _debugPath.Replace(@"\", "/");
+            
             string deepLevel = "/../../../../../..";
 
             if (!Directory.Exists(_debugPath + deepLevel + "/NameAndDate"))
@@ -94,22 +96,18 @@ namespace TimetableAPI.Deserializator
             }
             if (!File.Exists($"{_debugPath}{deepLevel}/NameAndDate/Nameanddate.json"))
             {
-                var nameanddateJoson = new Rootnameanddate
+                var nameanddateJoson = new Rootnameanddate()
                 {
                     nameAndDate = new Nameanddate[]
                     {
-                        new Nameanddate()
+                        new Nameanddate
                         {
-                            name = "shedulerDataTest.json",
-                            date = "2008-03-09T16:05:07"
-                        },
-                        new Nameanddate()
-                        {
-                            name = "shedulerDataTest2.json",
-                            date = "2008-03-09T17:05:07"
+                            name = "Test",
+                            date ="Test"
                         }
                     }
                 };
+          
                 using (var stream = new FileStream($"{_debugPath}{deepLevel}/NameAndDate/Nameanddate.json", FileMode.OpenOrCreate))
                 {
                     using( var sw = new StreamWriter(stream))
@@ -275,20 +273,32 @@ namespace TimetableAPI.Deserializator
 
                                 break;
                         }
+
                         Nameanddate newNameAndDate = new Nameanddate
                         {
                             name = _file.Name,
                             date = lastWriteTime
                         };
-                        string jsonNewNameAndDate = JsonConvert.SerializeObject(newNameAndDate);
 
-                        string str = "},";
+                var nameAndDatePluseOne = new Nameanddate[nameAndDate.nameAndDate.Length + 1];
+                for (int i = 0; i < nameAndDate.nameAndDate.Length; i++)
+                {
+                    nameAndDatePluseOne[i] = nameAndDate.nameAndDate[i];
+                }
+                nameAndDatePluseOne[nameAndDate.nameAndDate.Length] = newNameAndDate;
+
+                nameAndDate.nameAndDate = nameAndDatePluseOne;
+
+
+                        string jsonNewNameAndDate = JsonConvert.SerializeObject(nameAndDate);
+
+                       /* string str = "},";
                                 
                         string nameAndDateContent = File.ReadAllText(nameAndDateJsonString);
                         int indexOfString = nameAndDateContent.IndexOf(str);
-                        nameAndDateContent = nameAndDateContent.Insert(136, jsonNewNameAndDate + ",");
+                        nameAndDateContent = nameAndDateContent.Insert(136, jsonNewNameAndDate + ",");*/
                                 
-                        File.WriteAllText(nameAndDateJsonString, nameAndDateContent);
+                        File.WriteAllText(nameAndDateJsonString, jsonNewNameAndDate);
 
                         File.Delete(shedulerJsonString);
                     }

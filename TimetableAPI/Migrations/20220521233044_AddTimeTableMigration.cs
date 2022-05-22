@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TimetableAPI.Migrations
 {
-    public partial class AddSchedulerMigration : Migration
+    public partial class AddTimeTableMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -177,6 +177,48 @@ namespace TimetableAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "Groups",
+                columns: new[] { "Group_id", "Group_name" },
+                values: new object[,]
+                {
+                    { 1000017945, "о.ЭЗДт 32.2/Б-20" },
+                    { 1000018011, "о.ИЗДт 30.2/Б1-20" },
+                    { 1000018210, "л.ЭЗДт 32.1/Б1-20" },
+                    { 1000018364, "л.ЮВДтс 22.1/Б2-20" },
+                    { 1000019061, "з.ЮЗДт 82.3/М2-20" },
+                    { 1000019464, "РЮД 13.1-21" },
+                    { 1000019466, "РЭД 21.1-21" },
+                    { 1000019467, "РЭД 20.1-21" },
+                    { 1000019558, "о.УЗДт 21.2/Б6-20" },
+                    { 1000020418, "о.УЗДт 21.2/Б7-20" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Permissions",
+                columns: new[] { "Permission_id", "Permission_name" },
+                values: new object[,]
+                {
+                    { 1, "Студент" },
+                    { 2, "Староста или помощник" },
+                    { 3, "Преподаватель" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "User_id", "AuthCode", "Email", "Group_id", "Login", "Name", "Password", "Permission_id", "Token" },
+                values: new object[] { 1, null, "70134928@online.muiv.ru", 1000017945, "robpol", "Роберт Полсон", "qwerty", 2, null });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "User_id", "AuthCode", "Email", "Group_id", "Login", "Name", "Password", "Permission_id", "Token" },
+                values: new object[] { 2, null, "70137919@online.muiv.ru", 1000018364, "70137919", "Артур Пендрагон", "ZCj,frfNsCj,frf", 1, null });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "User_id", "AuthCode", "Email", "Group_id", "Login", "Name", "Password", "Permission_id", "Token" },
+                values: new object[] { 3, null, "70139904@online.muiv.ru", 1000017945, "1111", "Олегг", "qwert", 2, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Schedulers_Day_id",

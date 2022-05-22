@@ -110,6 +110,16 @@
                     Email = "70137919@online.muiv.ru",
                     Group_id = 1000018364,
                     Permission_id = 1
+                },
+                new User
+                {
+                    User_id = 3,
+                    Name = "Олегг",
+                    Login = "1111",
+                    Password = "qwert",
+                    Email = "70139904@online.muiv.ru",
+                    Group_id = 1000017945,
+                    Permission_id = 2
                 });
         }
     }

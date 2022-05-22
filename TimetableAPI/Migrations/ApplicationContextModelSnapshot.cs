@@ -33,6 +33,58 @@ namespace TimetableAPI.Migrations
                     b.HasKey("Group_id");
 
                     b.ToTable("Groups");
+
+                    b.HasData(
+                        new
+                        {
+                            Group_id = 1000017945,
+                            Group_name = "о.ЭЗДт 32.2/Б-20"
+                        },
+                        new
+                        {
+                            Group_id = 1000018011,
+                            Group_name = "о.ИЗДт 30.2/Б1-20"
+                        },
+                        new
+                        {
+                            Group_id = 1000018210,
+                            Group_name = "л.ЭЗДт 32.1/Б1-20"
+                        },
+                        new
+                        {
+                            Group_id = 1000018364,
+                            Group_name = "л.ЮВДтс 22.1/Б2-20"
+                        },
+                        new
+                        {
+                            Group_id = 1000019061,
+                            Group_name = "з.ЮЗДт 82.3/М2-20"
+                        },
+                        new
+                        {
+                            Group_id = 1000019464,
+                            Group_name = "РЮД 13.1-21"
+                        },
+                        new
+                        {
+                            Group_id = 1000019466,
+                            Group_name = "РЭД 21.1-21"
+                        },
+                        new
+                        {
+                            Group_id = 1000019467,
+                            Group_name = "РЭД 20.1-21"
+                        },
+                        new
+                        {
+                            Group_id = 1000019558,
+                            Group_name = "о.УЗДт 21.2/Б6-20"
+                        },
+                        new
+                        {
+                            Group_id = 1000020418,
+                            Group_name = "о.УЗДт 21.2/Б7-20"
+                        });
                 });
 
             modelBuilder.Entity("TimetableAPI.Models.Permission", b =>
@@ -49,6 +101,23 @@ namespace TimetableAPI.Migrations
                     b.HasKey("Permission_id");
 
                     b.ToTable("Permissions");
+
+                    b.HasData(
+                        new
+                        {
+                            Permission_id = 1,
+                            Permission_name = "Студент"
+                        },
+                        new
+                        {
+                            Permission_id = 2,
+                            Permission_name = "Староста или помощник"
+                        },
+                        new
+                        {
+                            Permission_id = 3,
+                            Permission_name = "Преподаватель"
+                        });
                 });
 
             modelBuilder.Entity("TimetableAPI.Models.Report", b =>
@@ -211,6 +280,38 @@ namespace TimetableAPI.Migrations
                     b.HasIndex("Permission_id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            User_id = 1,
+                            Email = "70134928@online.muiv.ru",
+                            Group_id = 1000017945,
+                            Login = "robpol",
+                            Name = "Роберт Полсон",
+                            Password = "qwerty",
+                            Permission_id = 2
+                        },
+                        new
+                        {
+                            User_id = 2,
+                            Email = "70137919@online.muiv.ru",
+                            Group_id = 1000018364,
+                            Login = "70137919",
+                            Name = "Артур Пендрагон",
+                            Password = "ZCj,frfNsCj,frf",
+                            Permission_id = 1
+                        },
+                        new
+                        {
+                            User_id = 3,
+                            Email = "70139904@online.muiv.ru",
+                            Group_id = 1000017945,
+                            Login = "1111",
+                            Name = "Олегг",
+                            Password = "qwert",
+                            Permission_id = 2
+                        });
                 });
 
             modelBuilder.Entity("TimetableAPI.Models.Scheduler", b =>
