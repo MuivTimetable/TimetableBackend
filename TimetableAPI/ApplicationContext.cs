@@ -120,6 +120,17 @@
                     Email = "70139904@online.muiv.ru",
                     Group_id = 1000017945,
                     Permission_id = 2
+                }
+                ,
+                new User
+                {
+                    User_id = 4,
+                    Name = "Александр Лаптев",
+                    Login = "70140101",
+                    Password = "Qwe123asd",
+                    Email = "70140101@online.muiv.ru",
+                    Group_id = 1000018364,
+                    Permission_id = 2
                 });
         }
     }
