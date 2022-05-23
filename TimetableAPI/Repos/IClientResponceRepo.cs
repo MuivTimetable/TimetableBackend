@@ -28,13 +28,13 @@ namespace TimetableAPI.Repos
 
         Task<bool> EmailCodeAutoAsync(EmailAutoDto request);
 
-        Task<IEnumerable<TimetableReadAnswerDto>> GetSchedulersAsync(TimetableReadRequestDto request);
+        Task<TimetableReadAnswerDto> GetSchedulersAsync(TimetableReadRequestDto request);
 
         Task<bool> PostCommentAsync(CommentCreateDto comment);
 
         Task<bool> TotalizerClickAsync(TotalizerUpdateDto totalizer);
 
-        Task<IEnumerable<Group>> GetGroupsAsync();
+        Task<GroupAnswerDto> GetGroupsAsync();
 
     }
 }

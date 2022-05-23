@@ -2,6 +2,12 @@
 {
     public class TimetableReadAnswerDto
     {
+        public IEnumerable<Timetables> Timetables { get; set; }
+    }
+
+
+    public class Timetables
+    {
         public int Day_id { get; set; }
         public int Work_Year { get; set; }
         public int Work_Month { get; set; }

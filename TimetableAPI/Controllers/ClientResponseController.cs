@@ -57,7 +57,7 @@ namespace TimetableAPI.Controllers
         }
 
         [HttpGet("groups")]
-        public async Task<ActionResult<IEnumerable<Models.Group>>> GetGroupsAsync()
+        public async Task<ActionResult<GroupAnswerDto>> GetGroupsAsync()
         {
             try
             {
@@ -71,7 +71,7 @@ namespace TimetableAPI.Controllers
         }
 
         [HttpPost("scheduler")]
-        public async Task<ActionResult<IEnumerable<TimetableReadAnswerDto>>> GetSchedulersAsync(TimetableReadRequestDto timetableReadRequestDto)
+        public async Task<ActionResult<TimetableReadAnswerDto>> GetSchedulersAsync(TimetableReadRequestDto timetableReadRequestDto)
         {
             try
             {

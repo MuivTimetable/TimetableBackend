@@ -82,12 +82,12 @@ namespace TimetableAPI.Repos
             return false;
         }
 
-        public async Task<IEnumerable<Group>> GetGroupsAsync()
+        public async Task<GroupAnswerDto> GetGroupsAsync()
         {
-            return await _context.Groups.ToListAsync();
+            return new GroupAnswerDto() { Groups = await _context.Groups.ToListAsync() };
         }
 
-        public async Task<IEnumerable<TimetableReadAnswerDto>> GetSchedulersAsync(TimetableReadRequestDto request)
+        public async Task<TimetableReadAnswerDto> GetSchedulersAsync(TimetableReadRequestDto request)
         {
             int? groupId;
 
@@ -97,7 +97,7 @@ namespace TimetableAPI.Repos
                 return null;
             }
 
-            var answer = new List<TimetableReadAnswerDto>();
+            var answer = new List<Timetables>();
 
             if (request.Token != null)
             {
@@ -137,7 +137,7 @@ namespace TimetableAPI.Repos
                     continue;
                 }
 
-                var answerItem = new TimetableReadAnswerDto()
+                var answerItem = new Timetables()
                 {
                     Day_id = schedulerDay.Day_id,
                     Work_Date_Name = schedulerDay.Work_Date_Name,
@@ -190,7 +190,7 @@ namespace TimetableAPI.Repos
 
 
 
-            return (answer);
+            return (new TimetableReadAnswerDto {Timetables = answer });
         }
 
         public async Task<bool> PostCommentAsync(CommentCreateDto comment)
