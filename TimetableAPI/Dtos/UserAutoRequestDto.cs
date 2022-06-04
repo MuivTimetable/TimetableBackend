@@ -4,9 +4,8 @@
     {
         public string Login { get; set; }
 
-        //TODO: hash
         public string Password { get; set; }
 
-        //TODO: Определить перечнь прочих требований
+        public string UserIdentity { get; set; }
     }
 }

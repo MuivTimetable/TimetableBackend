@@ -15,11 +15,14 @@
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<Session> Session { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Scheduler_Group>().HasKey(u => new { u.Scheduler_id, u.Group_id });
+
+            modelBuilder.Entity<Session>().HasKey(u => new { u.User_id, u.SessionIdentificator });
 
             modelBuilder.Entity<Permission>().HasData(
                 new Permission {

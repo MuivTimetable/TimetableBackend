@@ -21,6 +21,8 @@
 
         public string? Token { get; set; }
 
+        public string? preToken { get; set; }
+
         public int? AuthCode { get; set; }
 
         public int? Permission_id { get; set; }

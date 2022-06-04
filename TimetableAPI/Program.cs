@@ -18,8 +18,6 @@ builder.Services.AddScoped<IDeserializator, Deserializator>();
 builder.Services.Configure<SMTPConfig>(builder.Configuration.GetSection("SMTPConfig"));
 
 
-//TODO: �������� ��������� �������
-
 builder.Services.AddOptions();
 
 

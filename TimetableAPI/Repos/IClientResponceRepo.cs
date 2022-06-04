@@ -10,7 +10,7 @@ namespace TimetableAPI.Repos
 
         UserAutoAnswerDto AutoriseUser(UserAutoRequestDto request, IOptions<SMTPConfig> _options);
 
-        bool EmailCodeAuto(EmailAutoDto request);
+        bool EmailCodeAuto(EmailAutoRequestDto request);
 
         IEnumerable<TimetableReadAnswerDto> GetSchedulers(TimetableReadRequestDto request);
 
@@ -26,7 +26,7 @@ namespace TimetableAPI.Repos
 
         Task<UserAutoAnswerDto> AutoriseUserAsync(UserAutoRequestDto request, IOptions<SMTPConfig> _options);
 
-        Task<bool> EmailCodeAutoAsync(EmailAutoDto request);
+        Task<EmailAutoAnswerDto> EmailCodeAutoAsync(EmailAutoRequestDto request);
 
         Task<TimetableReadAnswerDto> GetSchedulersAsync(TimetableReadRequestDto request);
 
@@ -35,6 +35,8 @@ namespace TimetableAPI.Repos
         Task<bool> TotalizerClickAsync(TotalizerUpdateDto totalizer);
 
         Task<GroupAnswerDto> GetGroupsAsync();
+
+        //Task<bool> CloseSessionAsync(CloseSessionDto request);
 
     }
 }

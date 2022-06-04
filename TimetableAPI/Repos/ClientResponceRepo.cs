@@ -18,68 +18,77 @@ namespace TimetableAPI.Repos
 
         public async Task<UserAutoAnswerDto> AutoriseUserAsync(UserAutoRequestDto request, IOptions<SMTPConfig> _options)
         {
-            var user = new UserAutoAnswerDto();
+            var DbUser = await _context.Users.Where(
+                s => s.Login.Equals(request.Login) 
+                && s.Password.Equals(request.Password)).
+                FirstAsync();
 
-            if (await _context.Users.Where(s => s.Login.Equals(request.Login) && s.Password.Equals(request.Password)).Select(s => s.User_id).AnyAsync())
+            if (DbUser != null || request.UserIdentity == null)
             {
-                if(! await _context.Users.Where(s => s.Login.Equals(request.Login) && s.Password.Equals(request.Password)).Select(s => s.Token).ContainsAsync(null))
+                var sessions = await _context.Session.Where(
+                    s => s.User_id.Equals(DbUser.User_id)).
+                    ToListAsync();
+                
+                if(sessions.Count() > 0)
                 {
-                    user.AnswerOption = 0;
-                    user.IdentityToken = null;
-                }
-                else
-                {
-                    User dbUser = await _context.Users.Where(s => s.Login.Equals(request.Login) && s.Password.Equals(request.Password)).FirstOrDefaultAsync();
-                    user.AnswerOption = 3;
-                    var preToken = DateTime.Now.ToString().ToCharArray();
-                    StringBuilder token = new StringBuilder();
-                    for(int i = 0; i < preToken.Length; i++)
+                    foreach(Session session in sessions)
                     {
-                        token.Append(Convert.ToByte(preToken[i]));
+                        if(session.SessionIdentificator == request.UserIdentity)
+                        {
+                            return new UserAutoAnswerDto { AnswerOption = 0, IdentityToken = DbUser.Token };
+                        }
                     }
-                    user.IdentityToken = token.ToString();
-
-                    dbUser.Token = user.IdentityToken;
-
-                    dbUser.AuthCode = rand.Next(100, 999);
-
-                    var sender = new SMTPSender();
-                    sender.Send(dbUser.Email, (int)dbUser.AuthCode, _options);
-
-                    await SaveChangesAsync();
                 }
-            }
-            else
-            {
-                user.AnswerOption = 1;
-                user.IdentityToken = null;
+
+                DbUser.preToken = CreateToken() + "p";
+
+                DbUser.AuthCode = rand.Next(100, 999);
+
+                var sender = new SMTPSender();
+                sender.Send(DbUser.Email, (int)DbUser.AuthCode, _options);
+
+                await SaveChangesAsync();
+
+                return new UserAutoAnswerDto { AnswerOption = 2, IdentityToken = DbUser.preToken };
+              
             }
       
-            return user;
+            return new UserAutoAnswerDto { AnswerOption = 1, IdentityToken = null};
         }
 
-        public async Task<bool> EmailCodeAutoAsync(EmailAutoDto request)
+        public async Task<EmailAutoAnswerDto> EmailCodeAutoAsync(EmailAutoRequestDto request)
         {
 
-            var user = await _context.Users.Where(s => s.Token.Equals(request.Token)).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(s => s.preToken.Equals(request.EmailAutoToken)).FirstOrDefaultAsync();
 
             if(user == null)
             {
-                return false;
+                return new EmailAutoAnswerDto { AnswerOption = false, Token = null};
             }
 
             if (user.AuthCode.Equals(request.EmailCode))
             {
                 user.AuthCode = null;
+
+                await _context.Session.AddAsync(new Session { User_id = user.User_id, SessionIdentificator = request.UserIdentity, User = user });
+
+                if (user.Token == null)
+                {
+                    user.Token = CreateToken();
+                }
+
+                user.preToken = null;
+
                 await SaveChangesAsync();
-                return true;
+
+                return new EmailAutoAnswerDto { AnswerOption = true, Token = user.Token};
             }
 
             user.AuthCode = null;
-            user.Token = null;
+            user.preToken = null;
 
             await SaveChangesAsync();
-            return false;
+            return new EmailAutoAnswerDto { AnswerOption = false, Token = null};
         }
 
         public async Task<GroupAnswerDto> GetGroupsAsync()
@@ -182,21 +191,15 @@ namespace TimetableAPI.Repos
                 monday = monday.AddDays(+1);
             }
 
-            //TODO: сделай разделение на 3 инта и постом проверку в цикле + Сделай миграцию!
-
-
-
-
-
-
-
-            return (new TimetableReadAnswerDto {Timetables = answer });
+            return new TimetableReadAnswerDto {Timetables = answer };
         }
 
         public async Task<bool> PostCommentAsync(CommentCreateDto comment)
         {
 
-            var user = await _context.Users.Where(s => s.Token.Equals(comment.Token)).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(
+                s => s.Token.Equals(comment.Token))
+                .FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -208,7 +211,9 @@ namespace TimetableAPI.Repos
             {
                 case 2:
                 case 3:
-                    var scheduler = await _context.Schedulers.Where(s => s.Scheduler_id.Equals(comment.Scheduler_id)).FirstOrDefaultAsync();
+                    var scheduler = await _context.Schedulers.Where(
+                        s => s.Scheduler_id.Equals(comment.Scheduler_id))
+                        .FirstOrDefaultAsync();
 
                     if (scheduler == null)
                     {
@@ -228,7 +233,9 @@ namespace TimetableAPI.Repos
 
         public async Task<bool> TotalizerClickAsync(TotalizerUpdateDto totalizer)
         {
-            var user = await _context.Users.Where(s => s.Token.Equals(totalizer.Token)).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(
+                s => s.Token.Equals(totalizer.Token))
+                .FirstOrDefaultAsync();
             if (user == null)
             {
                 return false;
@@ -240,7 +247,9 @@ namespace TimetableAPI.Repos
                 case 2:
                     for (int i = 0; i < totalizer.Scheduler_id.Length; i++)
                     {
-                        var scheduler = await _context.Schedulers.Where(s => s.Scheduler_id.Equals(totalizer.Scheduler_id[i])).FirstOrDefaultAsync();
+                        var scheduler = await _context.Schedulers.Where(
+                            s => s.Scheduler_id.Equals(totalizer.Scheduler_id[i]))
+                            .FirstOrDefaultAsync();
 
                         if(scheduler == null)
                         {
@@ -255,7 +264,6 @@ namespace TimetableAPI.Repos
                         {
                             scheduler.Totalizer--;
                         }
-                       // scheduler.Totalizer = totalizer.MoreOrLess ? scheduler.Totalizer++ : scheduler.Totalizer--;
                     }
                     break;
 
@@ -267,11 +275,52 @@ namespace TimetableAPI.Repos
             return true;
         }
 
+       /* public async Task<bool> CloseSessionAsync(CloseSessionDto request)
+        {
+            var user = await _context.Users.Where(u => u.Token.Equals(request.Token)).FirstOrDefaultAsync();
+
+            if(user == null)
+            {
+                return false;
+            }
+
+            var sessions = await _context.Sessions.Where(s => s.User_id.Equals(user.User_id)).ToListAsync();
+
+            foreach(Session session in sessions)
+            {
+                if(session.SessionIdentificator == request.UserIdentity)
+                {
+                    sessions.Remove(session);
+                    break;
+                }
+            }
+
+            if(sessions.Count == 0)
+            {
+                user.Token = null;
+            }
+
+            return true;
+        }*/
+
+
         public async Task<bool> SaveChangesAsync()
         {
             return await (_context.SaveChangesAsync()) >= 0;
         }
 
+        public string CreateToken()
+        {
+            var mashToken = DateTime.Now.ToString().ToCharArray();
+            StringBuilder preToken = new StringBuilder();
+
+            for (int i = 0; i < mashToken.Length; i++)
+            {
+                preToken.Append(Convert.ToByte(mashToken[i]));
+            }
+
+            return preToken.ToString();
+        }
 
         //Sync methods:
 
@@ -285,7 +334,7 @@ namespace TimetableAPI.Repos
             throw new NotImplementedException();
         }
 
-        public bool EmailCodeAuto(EmailAutoDto request)
+        public bool EmailCodeAuto(EmailAutoRequestDto request)
         {
             throw new NotImplementedException();
         }

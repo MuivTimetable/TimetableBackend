@@ -1,9 +1,9 @@
 ﻿namespace TimetableAPI.Dtos
 {
-    public class EmailAutoDto
+    public class CloseSessionDto
     {
         public string Token { get; set; }
 
-        public int EmailCode { get; set; }
+        public string UserIdentity { get; set; }
     }
 }

@@ -19,7 +19,11 @@ namespace TimetableAPI.Controllers
         private readonly IOptions<SMTPConfig> _options;
         private readonly IDeserializator _deserializator;
 
-        public ClientResponseController(IClientResponceRepo repository, IMapper mapper, IOptions<SMTPConfig> options, IDeserializator deserializator)
+        public ClientResponseController(
+            IClientResponceRepo repository, 
+            IMapper mapper, 
+            IOptions<SMTPConfig> options, 
+            IDeserializator deserializator)
         {
             _repository = repository;
             _mapper = mapper;
@@ -43,7 +47,7 @@ namespace TimetableAPI.Controllers
         }
 
         [HttpPost("verify")]
-        public async Task<ActionResult<UserAutoAnswerDto>> VerifyEmailAsync(EmailAutoDto emailAutoDto)
+        public async Task<ActionResult<UserAutoAnswerDto>> VerifyEmailAsync(EmailAutoRequestDto emailAutoDto)
         {
             try
             {
@@ -118,6 +122,21 @@ namespace TimetableAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        /*[HttpPost("exit")]
+        public async Task<ActionResult> CloseSession(CloseSessionDto closeSessionDto)
+        {
+            try
+            {
+                var result = await _repository.CloseSessionAsync(closeSessionDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }*/
 
         [HttpGet("startdes")]
         public ActionResult RunDeserializer(int code)
