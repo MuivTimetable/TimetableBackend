@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -425,6 +426,7 @@ namespace TimetableAPI.Deserializator
 
                 File.Delete(_groupsDataPath);
             }
+            Debug.WriteLine(_debugPath + deepLevel + "/GroupList");
         }
         public void DBContentRemover()
         {
