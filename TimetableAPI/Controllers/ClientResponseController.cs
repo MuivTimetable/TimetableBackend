@@ -145,9 +145,9 @@ namespace TimetableAPI.Controllers
             {
                 if (code == 1111)
                 {
+                    _deserializator.AddGroupsIntoDB();
                     var result = _deserializator.ShedulerDeserializator();
                     _deserializator.DBContentRemover();
-                    _deserializator.AddGroupsIntoDB();
                     return Ok(result);
                 }
                 else return BadRequest("А ну, супостат, отведуй силушки богатырской!!!!");
