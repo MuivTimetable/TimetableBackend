@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Diagnostics;
 using TimetableAPI.Deserializator;
 using TimetableAPI.Dtos;
 using TimetableAPI.Repos;
@@ -145,6 +146,7 @@ namespace TimetableAPI.Controllers
             {
                 if (code == 1111)
                 {
+                    Debug.WriteLine("\n----------- ПРОВЕРКА ОБНОВЛЕНИЙ БД -----------\n");
                     _deserializator.AddGroupsIntoDB();
                     var result = _deserializator.ShedulerDeserializator();
                     _deserializator.DBContentRemover();

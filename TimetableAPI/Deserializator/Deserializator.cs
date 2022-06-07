@@ -330,6 +330,8 @@ namespace TimetableAPI.Deserializator
             _debugPath = _debugPath.Replace(@"\", "/");
             string deepLevel = "/../../../../../..";
 
+            Debug.WriteLine($"\n-------------{_debugPath}{deepLevel}/GroupList-------------\n");
+
             if (!Directory.Exists(_debugPath + deepLevel + "/GroupList"))
             {
                 Directory.CreateDirectory(_debugPath + deepLevel + "/GroupList");
@@ -426,7 +428,6 @@ namespace TimetableAPI.Deserializator
 
                 File.Delete(_groupsDataPath);
             }
-            Debug.WriteLine(_debugPath + deepLevel + "/GroupList");
         }
         public void DBContentRemover()
         {
