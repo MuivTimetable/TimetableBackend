@@ -147,6 +147,7 @@ namespace TimetableAPI.Controllers
                 {
                     var result = _deserializator.ShedulerDeserializator();
                     _deserializator.DBContentRemover();
+                    _deserializator.AddGroupsIntoDB();
                     return Ok(result);
                 }
                 else return BadRequest("А ну, супостат, отведуй силушки богатырской!!!!");

@@ -67,6 +67,23 @@ namespace TimetableAPI.Deserializator
             _deserializator.ShedulerDeserializator();
         }
     }
+
+    public class RootobjectGroups
+    {
+        public Groups[] groups { get; set; }
+    }
+
+    public class Groups
+    {
+        public GroupData ДанныеГруппы { get; set; }
+    }
+
+    public class GroupData
+    {
+        public string groupCode { get; set; }
+        public string groupNum { get; set; }
+    }
+
     public class Deserializator : IDeserializator
     {
         private readonly ApplicationContext _context;
@@ -188,19 +205,19 @@ namespace TimetableAPI.Deserializator
                                         });
                                         _context.SaveChanges();
 
-                                        string schedulerLINQ = _context.Schedulers.OrderByDescending(s => s.Scheduler_id).Select(s => s.Scheduler_id).FirstOrDefault().ToString();
-                                        int schedulerID = int.Parse(schedulerLINQ);
+                                        var schedulerLINQ = _context.Schedulers.AsNoTracking().OrderByDescending(s => s.Scheduler_id).Select(s => s.Scheduler_id).FirstOrDefault();
+                                        
 
                                         for (int h = 0; h < sheduler.sheduler[i].workSheduler[j].groups.Length; h++)
                                         {
                                             var stringGroupID = "1" + sheduler.sheduler[i].workSheduler[j].groups[h].groupCode;
                                             var intGroupID = Int32.Parse(stringGroupID);
                                             
-                                            if (_context.Groups.Where(s => s.Group_id.Equals(intGroupID)).Select(s => s.Group_id).Any()) 
+                                            if (_context.Groups.Where(s => s.Group_id.Equals(intGroupID)).FirstOrDefault() != null) 
                                             {
                                                 _context.Schedulers_Groups.Add(new Models.Scheduler_Group
                                                 {
-                                                    Scheduler_id = schedulerID,
+                                                    Scheduler_id = schedulerLINQ,
                                                     Group_id = intGroupID
                                                 });
                                             }
@@ -246,19 +263,18 @@ namespace TimetableAPI.Deserializator
                                         });
                                         _context.SaveChanges();
 
-                                        string schedulerLINQ = _context.Schedulers.OrderByDescending(s => s.Scheduler_id).Select(s => s.Scheduler_id).FirstOrDefault().ToString();
-                                        int schedulerID = int.Parse(schedulerLINQ);
+                                        var schedulerLINQ = _context.Schedulers.AsNoTracking().OrderByDescending(s => s.Scheduler_id).Select(s => s.Scheduler_id).FirstOrDefault();
                                         
                                         for (int h = 0; h < sheduler.sheduler[i].workSheduler[j].groups.Length; h++)
                                         {
                                             var stringGroupID = "1" + sheduler.sheduler[i].workSheduler[j].groups[h].groupCode;
                                             var intGroupID = int.Parse(stringGroupID);
                                             
-                                            if (_context.Groups.Where(s => s.Group_id.Equals(intGroupID)).Select(s => s.Group_id).Any()) 
+                                            if (_context.Groups.Where(s => s.Group_id.Equals(intGroupID)).FirstOrDefault() != null) 
                                             {
                                                 _context.Schedulers_Groups.Add(new Models.Scheduler_Group
                                                 {
-                                                    Scheduler_id = schedulerID,
+                                                    Scheduler_id = schedulerLINQ,
                                                     Group_id = intGroupID
                                                 });
                                             }
@@ -305,6 +321,108 @@ namespace TimetableAPI.Deserializator
             return awaitAccord.ToString();
                 //}
             //}
+        }
+
+        public void AddGroupsIntoDB()
+        {
+            string? _debugPath = Path.GetDirectoryName(@AppDomain.CurrentDomain.BaseDirectory);
+            _debugPath = _debugPath.Replace(@"\", "/");
+            string deepLevel = "/../../../../../..";
+            if (File.Exists($"{_debugPath}{deepLevel}/GroupList/schedulerGroupsData.json"))
+            {
+                if (!Directory.Exists(_debugPath + deepLevel + "/GroupList"))
+                {
+                    Directory.CreateDirectory(_debugPath + deepLevel + "/GroupList");
+                }
+                if (!File.Exists($"{_debugPath}{deepLevel}/GroupList/Groupnameanddate.json"))
+                {
+                    var nameanddateJoson = new Rootnameanddate()
+                    {
+                        nameAndDate = new Nameanddate[]
+                        {
+                        new Nameanddate
+                        {
+                            name = "Test",
+                            date ="Test"
+                        }
+                        }
+                    };
+
+                    using (var stream = new FileStream($"{_debugPath}{deepLevel}/GroupList/Groupnameanddate.json", FileMode.OpenOrCreate))
+                    {
+                        using (var sw = new StreamWriter(stream))
+                        {
+                            sw.Write(JsonConvert.SerializeObject(nameanddateJoson));
+                        }
+                    }
+                }
+                string _groupNameAndDatePath = _debugPath + deepLevel + "/GroupList/Groupnameanddate.json";
+                var groupNameAndDate = JsonConvert.DeserializeObject<Rootnameanddate>(File.ReadAllText(_groupNameAndDatePath));
+
+                string _groupsDataPath = _debugPath + deepLevel + "/GroupList/schedulerGroupsData.json";
+                var groupsData = JsonConvert.DeserializeObject<RootobjectGroups>(File.ReadAllText(_groupsDataPath));
+
+                FileInfo _file = new FileInfo(_groupsDataPath);
+
+                string lastWriteTime = _file.LastWriteTime.ToString();
+                for (int i = 0; i < groupNameAndDate.nameAndDate.Length; i++)
+                {
+
+                    if (lastWriteTime != groupNameAndDate.nameAndDate[i].date)
+                    {
+                        awaitAccord = 1;
+                    }
+                    else if (lastWriteTime == groupNameAndDate.nameAndDate[i].date) { awaitAccord = 0; }
+                    break;
+                }
+
+                switch (awaitAccord)
+                {
+                    case 1:
+
+                        for (int i = 0; i < groupsData.groups.Length; i++)
+                        {
+                            var stringGroupID = "1" + groupsData.groups[i].ДанныеГруппы.groupCode;
+                            var intGroupID = int.Parse(stringGroupID);
+
+                            if (_context.Groups.Where(s => s.Group_id.Equals(intGroupID)).FirstOrDefault() == null)
+                            {
+                                _context.Groups.Add(new Models.Group
+                                {
+                                    Group_name = groupsData.groups[i].ДанныеГруппы.groupNum,
+                                    Group_id = intGroupID
+                                });
+                            }
+                            _context.SaveChanges();
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+
+                Nameanddate newNameAndDate = new Nameanddate
+                {
+                    name = _file.Name,
+                    date = lastWriteTime
+                };
+
+                var nameAndDatePluseOne = new Nameanddate[groupNameAndDate.nameAndDate.Length + 1];
+                for (int i = 0; i < groupNameAndDate.nameAndDate.Length; i++)
+                {
+                    nameAndDatePluseOne[i] = groupNameAndDate.nameAndDate[i];
+                }
+                nameAndDatePluseOne[groupNameAndDate.nameAndDate.Length] = newNameAndDate;
+
+                groupNameAndDate.nameAndDate = nameAndDatePluseOne;
+
+
+                string jsonNewNameAndDate = JsonConvert.SerializeObject(groupNameAndDate);
+
+                File.WriteAllText(_groupNameAndDatePath, jsonNewNameAndDate);
+
+                File.Delete(_groupsDataPath);
+            }
         }
         public void DBContentRemover()
         {

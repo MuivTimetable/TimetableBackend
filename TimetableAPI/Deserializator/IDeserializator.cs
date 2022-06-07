@@ -5,5 +5,7 @@
         string ShedulerDeserializator();
 
         void DBContentRemover();
+
+        void AddGroupsIntoDB();
     }
 }

@@ -157,16 +157,15 @@ namespace TimetableAPI.Repos
                 };
 
                 var couplesId = await _context.Schedulers_Groups.
-                    Join(_context.Schedulers, s => s.Scheduler_id, p => p.Scheduler_id, (s,p) => new {group = s.Group_id, id = p.Scheduler_id}).
-                    Where(s => s.group.Equals(groupId)).
+                    Join(_context.Schedulers, s => s.Scheduler_id, p => p.Scheduler_id, (s,p) => new {group = s.Group_id, day_id = p.Day_id, scheduler_id = p.Scheduler_id}).
+                    Where(s => s.group.Equals(groupId) && s.day_id.Equals(answerItem.Day_id)).
                     ToListAsync();
 
                 var schedulers = new SchedulersInDays[couplesId.Count];
 
                 for (int i=0; i < couplesId.Count; i++)
                 {
-                    var couple = await _context.Schedulers.Where(s => s.Scheduler_id.Equals(couplesId[i].id)).FirstOrDefaultAsync();
-
+                    var couple = await _context.Schedulers.Where(s => s.Scheduler_id.Equals(couplesId[i].scheduler_id)).FirstOrDefaultAsync();
                     var schedulerItem = new SchedulersInDays()
                     {
                         Area = couple.Area,
