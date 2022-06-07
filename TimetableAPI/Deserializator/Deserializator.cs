@@ -328,34 +328,36 @@ namespace TimetableAPI.Deserializator
             string? _debugPath = Path.GetDirectoryName(@AppDomain.CurrentDomain.BaseDirectory);
             _debugPath = _debugPath.Replace(@"\", "/");
             string deepLevel = "/../../../../../..";
-            if (File.Exists($"{_debugPath}{deepLevel}/GroupList/schedulerGroupsData.json"))
+
+            if (!Directory.Exists(_debugPath + deepLevel + "/GroupList"))
             {
-                if (!Directory.Exists(_debugPath + deepLevel + "/GroupList"))
+                Directory.CreateDirectory(_debugPath + deepLevel + "/GroupList");
+            }
+            if (!File.Exists($"{_debugPath}{deepLevel}/GroupList/Groupnameanddate.json"))
+            {
+                var nameanddateJoson = new Rootnameanddate()
                 {
-                    Directory.CreateDirectory(_debugPath + deepLevel + "/GroupList");
-                }
-                if (!File.Exists($"{_debugPath}{deepLevel}/GroupList/Groupnameanddate.json"))
-                {
-                    var nameanddateJoson = new Rootnameanddate()
+                    nameAndDate = new Nameanddate[]
                     {
-                        nameAndDate = new Nameanddate[]
-                        {
                         new Nameanddate
                         {
                             name = "Test",
                             date ="Test"
                         }
-                        }
-                    };
+                    }
+                };
 
-                    using (var stream = new FileStream($"{_debugPath}{deepLevel}/GroupList/Groupnameanddate.json", FileMode.OpenOrCreate))
+                using (var stream = new FileStream($"{_debugPath}{deepLevel}/GroupList/Groupnameanddate.json", FileMode.OpenOrCreate))
+                {
+                    using (var sw = new StreamWriter(stream))
                     {
-                        using (var sw = new StreamWriter(stream))
-                        {
-                            sw.Write(JsonConvert.SerializeObject(nameanddateJoson));
-                        }
+                        sw.Write(JsonConvert.SerializeObject(nameanddateJoson));
                     }
                 }
+            }
+
+            if (File.Exists($"{_debugPath}{deepLevel}/GroupList/schedulerGroupsData.json"))
+            {
                 string _groupNameAndDatePath = _debugPath + deepLevel + "/GroupList/Groupnameanddate.json";
                 var groupNameAndDate = JsonConvert.DeserializeObject<Rootnameanddate>(File.ReadAllText(_groupNameAndDatePath));
 
