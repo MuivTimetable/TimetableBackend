@@ -21,7 +21,7 @@ namespace TimetableAPI.Repos
             var DbUser = await _context.Users.Where(
                 s => s.Login.Equals(request.Login) 
                 && s.Password.Equals(request.Password)).
-                FirstAsync();
+                FirstOrDefaultAsync();
 
             if (DbUser != null || request.UserIdentity == null)
             {
