@@ -2,7 +2,7 @@
 {
     public class EmailAutoAnswerDto
     {
-        public bool AnswerOption { get; set; }
+        public bool VerifyAnswerOption { get; set; }
 
         public string Token { get; set; }
     }

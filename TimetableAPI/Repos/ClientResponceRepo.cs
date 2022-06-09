@@ -35,7 +35,7 @@ namespace TimetableAPI.Repos
                     {
                         if(session.SessionIdentificator == request.UserIdentity)
                         {
-                            return new UserAutoAnswerDto { AnswerOption = 0, IdentityToken = DbUser.Token };
+                            return new UserAutoAnswerDto { AutoAnswerOption = 0, IdentityToken = DbUser.Token };
                         }
                     }
                 }
@@ -49,11 +49,11 @@ namespace TimetableAPI.Repos
 
                 await SaveChangesAsync();
 
-                return new UserAutoAnswerDto { AnswerOption = 2, IdentityToken = DbUser.preToken };
+                return new UserAutoAnswerDto { AutoAnswerOption = 2, IdentityToken = DbUser.preToken };
               
             }
       
-            return new UserAutoAnswerDto { AnswerOption = 1, IdentityToken = null};
+            return new UserAutoAnswerDto { AutoAnswerOption = 1, IdentityToken = null};
         }
 
         public async Task<EmailAutoAnswerDto> EmailCodeAutoAsync(EmailAutoRequestDto request)
@@ -63,7 +63,7 @@ namespace TimetableAPI.Repos
 
             if(user == null)
             {
-                return new EmailAutoAnswerDto { AnswerOption = false, Token = null};
+                return new EmailAutoAnswerDto { VerifyAnswerOption = false, Token = null};
             }
 
             if (user.AuthCode.Equals(request.EmailCode))
@@ -81,14 +81,14 @@ namespace TimetableAPI.Repos
 
                 await SaveChangesAsync();
 
-                return new EmailAutoAnswerDto { AnswerOption = true, Token = user.Token};
+                return new EmailAutoAnswerDto { VerifyAnswerOption = true, Token = user.Token};
             }
 
             user.AuthCode = null;
             user.preToken = null;
 
             await SaveChangesAsync();
-            return new EmailAutoAnswerDto { AnswerOption = false, Token = null};
+            return new EmailAutoAnswerDto { VerifyAnswerOption = false, Token = null};
         }
 
         public async Task<GroupAnswerDto> GetGroupsAsync()
@@ -193,7 +193,7 @@ namespace TimetableAPI.Repos
             return new TimetableReadAnswerDto {Timetables = answer };
         }
 
-        public async Task<bool> PostCommentAsync(CommentCreateDto comment)
+        public async Task<CommentAnswerDto> PostCommentAsync(CommentCreateDto comment)
         {
 
             var user = await _context.Users.Where(
@@ -202,7 +202,15 @@ namespace TimetableAPI.Repos
 
             if (user == null)
             {
-                return false;
+                return new CommentAnswerDto { CommentAnswerInfo = "Пользователя с данным токеном не существует!", CommentAnswerOption = false };
+            }
+
+            if (user.Group_id != await _context.Schedulers_Groups.Where(
+                sg => sg.Scheduler_id.Equals(comment.Scheduler_id) &&
+                sg.Group_id.Equals(user.Group_id)).Select(sg => sg.Group_id).
+                FirstOrDefaultAsync())
+            {
+                return new CommentAnswerDto { CommentAnswerInfo = "Отказано в доступе: Пользователь не может комментировать занятия данной группы!", CommentAnswerOption = false };
             }
 
             switch (user.Permission_id)
@@ -222,22 +230,35 @@ namespace TimetableAPI.Repos
                     scheduler.Comment = comment.Comment;
                     break;
 
-                default: return false;
+                default: return new CommentAnswerDto { CommentAnswerInfo = "Отказано в доступе: Пользователь не имеет права комментирования занятий!", CommentAnswerOption = false };
             }
 
             await SaveChangesAsync();
 
-            return true;
+            return new CommentAnswerDto { CommentAnswerInfo = "Операция пройдена успешно!", CommentAnswerOption = true };
         }
 
-        public async Task<bool> TotalizerClickAsync(TotalizerUpdateDto totalizer)
+
+        public async Task<TotalizerAnswerDto> TotalizerClickAsync(TotalizerUpdateDto totalizer)
         {
             var user = await _context.Users.Where(
                 s => s.Token.Equals(totalizer.Token))
                 .FirstOrDefaultAsync();
             if (user == null)
             {
-                return false;
+                return new TotalizerAnswerDto { TotalizerAnswerInfo = "Пользователя с данным токеном не существует!", TotalizerAnswerOption = false};
+            }
+
+            for(int i = 0; i < totalizer.Scheduler_id.Length; i++)
+            {
+                if (user.Group_id != await _context.Schedulers_Groups.Where(
+                    sg => sg.Scheduler_id.Equals(totalizer.Scheduler_id[i]) && 
+                    sg.Group_id.Equals(user.Group_id)).
+                    Select(sg => sg.Group_id).
+                    FirstOrDefaultAsync())
+                {
+                    return new TotalizerAnswerDto { TotalizerAnswerInfo = "Отказано в доступе: Пользователь не может объявлять о своём присутствии/отсутствии на занятиях данной группы!", TotalizerAnswerOption = false };
+                }
             }
 
             switch (user.Permission_id)
@@ -266,12 +287,12 @@ namespace TimetableAPI.Repos
                     }
                     break;
 
-                default: return false;
+                default: return new TotalizerAnswerDto { TotalizerAnswerInfo = "Отказано в доступе: Пользователь не имеет права объявлять о своём присутствии/отсутствии на занятиях!", TotalizerAnswerOption = false };
             }
 
             await SaveChangesAsync();
 
-            return true;
+            return new TotalizerAnswerDto { TotalizerAnswerInfo = "Операция пройдена успешно!", TotalizerAnswerOption = true };
         }
 
        /* public async Task<bool> CloseSessionAsync(CloseSessionDto request)

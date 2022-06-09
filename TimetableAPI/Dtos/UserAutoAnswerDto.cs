@@ -3,6 +3,6 @@
     public class UserAutoAnswerDto
     {
         public string? IdentityToken { get; set; }
-        public int AnswerOption { get; set; }
+        public int AutoAnswerOption { get; set; }
     }
 }

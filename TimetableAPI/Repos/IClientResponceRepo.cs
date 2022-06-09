@@ -30,9 +30,9 @@ namespace TimetableAPI.Repos
 
         Task<TimetableReadAnswerDto> GetSchedulersAsync(TimetableReadRequestDto request);
 
-        Task<bool> PostCommentAsync(CommentCreateDto comment);
+        Task<CommentAnswerDto> PostCommentAsync(CommentCreateDto comment);
 
-        Task<bool> TotalizerClickAsync(TotalizerUpdateDto totalizer);
+        Task<TotalizerAnswerDto> TotalizerClickAsync(TotalizerUpdateDto totalizer);
 
         Task<GroupAnswerDto> GetGroupsAsync();
 
