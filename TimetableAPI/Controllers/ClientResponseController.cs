@@ -61,6 +61,20 @@ namespace TimetableAPI.Controllers
             }
         }
 
+        [HttpPost("uinfo")]
+        public async Task<ActionResult<UserAutoAnswerDto>> GetUserInfo(string token)
+        {
+            try
+            {
+                var item = await _repository.GetUserInfoAsync(token);
+                return Ok(item);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("groups")]
         public async Task<ActionResult<GroupAnswerDto>> GetGroupsAsync()
         {

@@ -100,7 +100,11 @@ namespace TimetableAPI.Repos
         {
             int? groupId;
 
-            if((request.Token == null && request.Group_id == null) 
+            int? permission;
+
+            string userName = null;
+
+            if ((request.Token == null && request.Group_id == null) 
                 || (request.Token != null && request.Group_id != null))
             {
                 return null;
@@ -112,7 +116,13 @@ namespace TimetableAPI.Repos
             {
                 groupId = await _context.Users.Where(s => s.Token.Equals(request.Token)).Select(s => s.Group_id).FirstOrDefaultAsync();
 
-                if (groupId == null) return null;
+                permission = await _context.Users.Where(u => u.Token.Equals(request.Token)).Select(u => u.Permission_id).FirstOrDefaultAsync();
+
+                if (groupId == null && permission != 3) return null;
+
+                permission = await _context.Users.Where(u => u.Token.Equals(request.Token)).Select(u => u.Permission_id).FirstOrDefaultAsync();
+
+                userName = await _context.Users.Where(u => u.Token.Equals(request.Token)).Select(s => s.Name).FirstOrDefaultAsync();
             }
             else
             {
@@ -120,7 +130,7 @@ namespace TimetableAPI.Repos
 
                 if (await _context.Groups.Where(s => s.Group_id.Equals(groupId)).FirstOrDefaultAsync() == null) return null;            
             }
-
+                        
             var monday = DateTime.Now;
 
             while(monday.DayOfWeek != DayOfWeek.Monday)
@@ -128,7 +138,9 @@ namespace TimetableAPI.Repos
                 monday = monday.AddDays(-1);
             }
 
-            while(monday.DayOfWeek != DayOfWeek.Sunday)
+            ShedulersCamparer sc = new ShedulersCamparer();
+
+            while (monday.DayOfWeek != DayOfWeek.Sunday)
             {
                 var schedulerDay = await _context.SchedulerDates.Where
                     (s => s.Work_Year.Equals(monday.Year) 
@@ -156,15 +168,24 @@ namespace TimetableAPI.Repos
                     DayOfTheWeek = monday.DayOfWeek.ToString()
                 };
 
+                List<int> couplesId = new List<int>();
 
                 //TODO: Добавить иф если это студент или это преподаватель - разные пары
+                switch (await _context.Users.Where(u => u.Token.Equals(request.Token)).Select(u => u.Permission_id).FirstOrDefaultAsync())
+                {
+                    case 3:
+                        couplesId = await _context.Schedulers.Where(s => s.Day_id.Equals(answerItem.Day_id) && s.Tutor.Equals(userName)).Select(p => p.Scheduler_id).ToListAsync();
+                        break;
 
-                var couplesId = await _context.Schedulers_Groups.
-                    Join(_context.Schedulers, s => s.Scheduler_id, p => p.Scheduler_id, (s,p) => new {group = s.Group_id, day_id = p.Day_id, scheduler_id = p.Scheduler_id}).
-                    Where(s => s.group.Equals(groupId) && s.day_id.Equals(answerItem.Day_id)).Select(p => p.scheduler_id).
-                    ToListAsync();
+                    default:
+                        couplesId = await _context.Schedulers_Groups.
+                        Join(_context.Schedulers, s => s.Scheduler_id, p => p.Scheduler_id, (s, p) => new { group = s.Group_id, day_id = p.Day_id, scheduler_id = p.Scheduler_id }).
+                        Where(s => s.group.Equals(groupId) && s.day_id.Equals(answerItem.Day_id)).Select(p => p.scheduler_id).
+                        ToListAsync();
+                        break;
+                }
 
-                var schedulers = new SchedulersInDays[couplesId.Count];
+                var schedulers = new List<SchedulersInDays>();
 
                 for (int i=0; i < couplesId.Count; i++)
                 {
@@ -184,8 +205,11 @@ namespace TimetableAPI.Repos
                         Branch = couple.Branch                        
                     };
 
-                    schedulers[i] = schedulerItem;
+                    schedulers.Add(schedulerItem);
                 }
+                                
+                schedulers.Sort(sc);
+
                 answerItem.Schedulers = schedulers;
 
                 answer.Add(answerItem);
@@ -193,9 +217,10 @@ namespace TimetableAPI.Repos
                 monday = monday.AddDays(+1);
             }
 
-            return new TimetableReadAnswerDto {Timetables = answer };
+            return new TimetableReadAnswerDto {Timetables = answer};
         }
 
+        
         public async Task<CommentAnswerDto> PostCommentAsync(CommentCreateDto comment)
         {
 
@@ -298,33 +323,45 @@ namespace TimetableAPI.Repos
             return new TotalizerAnswerDto { TotalizerAnswerInfo = "Операция пройдена успешно!", TotalizerAnswerOption = true };
         }
 
-       /* public async Task<bool> CloseSessionAsync(CloseSessionDto request)
+        public async Task<GetUserInfoDto> GetUserInfoAsync(string token)
         {
-            var user = await _context.Users.Where(u => u.Token.Equals(request.Token)).FirstOrDefaultAsync();
+            var info = await _context.Users.Where(u => u.Token.Equals(token)).FirstOrDefaultAsync();
 
-            if(user == null)
-            {
-                return false;
-            }
+            if (info == null) return null;
 
-            var sessions = await _context.Sessions.Where(s => s.User_id.Equals(user.User_id)).ToListAsync();
+            return new GetUserInfoDto { UserCoreGroupId = info.Group_id, UserPermissionId = info.Permission_id };
+        }
 
-            foreach(Session session in sessions)
-            {
-                if(session.SessionIdentificator == request.UserIdentity)
-                {
-                    sessions.Remove(session);
-                    break;
-                }
-            }
 
-            if(sessions.Count == 0)
-            {
-                user.Token = null;
-            }
 
-            return true;
-        }*/
+
+        /* public async Task<bool> CloseSessionAsync(CloseSessionDto request)
+         {
+             var user = await _context.Users.Where(u => u.Token.Equals(request.Token)).FirstOrDefaultAsync();
+
+             if(user == null)
+             {
+                 return false;
+             }
+
+             var sessions = await _context.Sessions.Where(s => s.User_id.Equals(user.User_id)).ToListAsync();
+
+             foreach(Session session in sessions)
+             {
+                 if(session.SessionIdentificator == request.UserIdentity)
+                 {
+                     sessions.Remove(session);
+                     break;
+                 }
+             }
+
+             if(sessions.Count == 0)
+             {
+                 user.Token = null;
+             }
+
+             return true;
+         }*/
 
 
         public async Task<bool> SaveChangesAsync()
@@ -385,6 +422,28 @@ namespace TimetableAPI.Repos
         bool IClientResponceRepo.SaveChangesAsync()
         {
             throw new NotImplementedException();
+        }
+
+
+    }
+
+    class ShedulersCamparer : IComparer<SchedulersInDays>
+    {
+        public int Compare(SchedulersInDays? x, SchedulersInDays? y)
+        {
+            int time1 = Convert.ToInt32(x.WorkStart.Replace(":", ""));
+            int time2 = Convert.ToInt32(y.WorkStart.Replace(":", ""));
+
+            if(time1 > time2)
+            {
+                return 1;
+            }
+            else if(time1 < time2)
+            {
+                return -1;
+            }
+
+            return 0;
         }
     }
 }

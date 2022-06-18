@@ -34,6 +34,8 @@ namespace TimetableAPI.Repos
 
         Task<TotalizerAnswerDto> TotalizerClickAsync(TotalizerUpdateDto totalizer);
 
+        Task<GetUserInfoDto> GetUserInfoAsync(string token);
+
         Task<GroupAnswerDto> GetGroupsAsync();
 
         //Task<bool> CloseSessionAsync(CloseSessionDto request);

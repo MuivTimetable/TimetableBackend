@@ -14,7 +14,7 @@
         public int Work_Day { get; set; }
         public string? Work_Date_Name { get; set; }
         public string DayOfTheWeek { get; set; }
-        public SchedulersInDays[] Schedulers { get; set; }
+        public List<SchedulersInDays> Schedulers { get; set; }
     }
 
     public class SchedulersInDays
