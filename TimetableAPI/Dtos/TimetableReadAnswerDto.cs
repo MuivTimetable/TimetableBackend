@@ -30,5 +30,6 @@
         public string Cathedra { get; set; }
         public string Comment { get; set; }
         public int Totalizer { get; set; }
+        public bool UserTotalizerChoice { get; set; }
     }
 }

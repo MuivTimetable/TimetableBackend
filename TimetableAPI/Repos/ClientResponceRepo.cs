@@ -104,6 +104,8 @@ namespace TimetableAPI.Repos
 
             string userName = null;
 
+            int? userId = null;
+
             if ((request.Token == null && request.Group_id == null) 
                 || (request.Token != null && request.Group_id != null))
             {
@@ -120,7 +122,7 @@ namespace TimetableAPI.Repos
 
                 if (groupId == null && permission != 3) return null;
 
-                permission = await _context.Users.Where(u => u.Token.Equals(request.Token)).Select(u => u.Permission_id).FirstOrDefaultAsync();
+                userId = await _context.Users.Where(u => u.Token.Equals(request.Token)).Select(s => s.User_id).FirstOrDefaultAsync();
 
                 userName = await _context.Users.Where(u => u.Token.Equals(request.Token)).Select(s => s.Name).FirstOrDefaultAsync();
             }
@@ -204,6 +206,23 @@ namespace TimetableAPI.Repos
                         WorkType = couple.Work_type,
                         Branch = couple.Branch                        
                     };
+
+                    bool totalizerOption = false;
+
+                    if(userId != null)
+                    {
+                        var totalizerInfo = await _context.Scheduler_User_Totalizers.Where(
+                        s => s.Scheduler_id.Equals(couplesId[i])
+                           && s.User_id.Equals(userId)).
+                           FirstOrDefaultAsync();
+
+                        if(totalizerInfo != null)
+                        {
+                            totalizerOption = totalizerInfo.TotalizerOption;                            
+                        }
+                    }
+
+                    schedulerItem.UserTotalizerChoice = totalizerOption;
 
                     schedulers.Add(schedulerItem);
                 }
@@ -311,6 +330,26 @@ namespace TimetableAPI.Repos
                         else
                         {
                             scheduler.Totalizer--;
+                        }
+
+                        var totalizerInfo = await _context.Scheduler_User_Totalizers.Where(
+                            s => s.Scheduler_id.Equals(scheduler.Scheduler_id)
+                            && s.User_id.Equals(user.User_id)).
+                            FirstOrDefaultAsync();
+
+                        if (totalizerInfo == null)
+                        {
+                            var infoItem = new Scheduler_User_Totalizer()
+                            {
+                                Scheduler_id = scheduler.Scheduler_id,
+                                User_id = user.User_id,
+                                TotalizerOption = totalizer.MoreOrLess
+                            };
+                            _context.Scheduler_User_Totalizers.Add(infoItem);
+                        }
+                        else
+                        {
+                            totalizerInfo.TotalizerOption = totalizer.MoreOrLess;
                         }
                     }
                     break;

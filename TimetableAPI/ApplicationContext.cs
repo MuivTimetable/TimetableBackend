@@ -16,6 +16,7 @@
         public DbSet<User> Users { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Session> Session { get; set; }
+        public DbSet<Scheduler_User_Totalizer> Scheduler_User_Totalizers { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,6 +24,8 @@
             modelBuilder.Entity<Scheduler_Group>().HasKey(u => new { u.Scheduler_id, u.Group_id });
 
             modelBuilder.Entity<Session>().HasKey(u => new { u.User_id, u.SessionIdentificator });
+
+            modelBuilder.Entity<Scheduler_User_Totalizer>().HasKey(u => new { u.Scheduler_id, u.User_id });
 
             modelBuilder.Entity<Permission>().HasData(
                 new Permission {
