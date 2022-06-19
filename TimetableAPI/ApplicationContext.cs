@@ -83,6 +83,36 @@
                     Email = "70140101@online.muiv.ru",
                     Group_id = 1000018364,
                     Permission_id = 2
+                },
+                new User
+                {
+                    User_id = 5,
+                    Name = "Test1",
+                    Login = "test1",
+                    Password = "test1",
+                    Email = "70140101@online.muiv.ru",
+                    Group_id = 1111,
+                    Permission_id = 2
+                }, 
+                new User
+                {
+                    User_id = 6,
+                    Name = "Test2",
+                    Login = "test2",
+                    Password = "test2",
+                    Email = "70139904@online.muiv.ru",
+                    Group_id = 1111,
+                    Permission_id = 2
+                }, 
+                new User
+                {
+                    User_id = 7,
+                    Name = "Test3",
+                    Login = "test3",
+                    Password = "test3",
+                    Email = "70134928@online.muiv.ru",
+                    Group_id = 1111,
+                    Permission_id = 2
                 });
 
             modelBuilder.Entity<Group>().HasData(
