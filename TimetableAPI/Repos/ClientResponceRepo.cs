@@ -255,7 +255,7 @@ namespace TimetableAPI.Repos
             if (user.Group_id != await _context.Schedulers_Groups.Where(
                 sg => sg.Scheduler_id.Equals(comment.Scheduler_id) &&
                 sg.Group_id.Equals(user.Group_id)).Select(sg => sg.Group_id).
-                FirstOrDefaultAsync())
+                FirstOrDefaultAsync() && user.Permission_id != 3)
             {
                 return new CommentAnswerDto { CommentAnswerInfo = "Отказано в доступе: Пользователь не может комментировать занятия данной группы!", CommentAnswerOption = false };
             }
