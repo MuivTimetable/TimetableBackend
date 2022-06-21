@@ -329,6 +329,10 @@ namespace TimetableAPI.Repos
                         }
                         else
                         {
+                            if(scheduler.Totalizer == 0)
+                            {
+                                continue;
+                            }
                             scheduler.Totalizer--;
                         }
 
