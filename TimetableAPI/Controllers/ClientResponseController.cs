@@ -72,7 +72,9 @@ namespace TimetableAPI.Controllers
         {
             if (code == 1111)
             {
+                //_deserializator.AddGroupsIntoDB();
                 _deserializator.ShedulerDeserializator();
+
                 _deserializator.DBContentRemover();
                 return Ok();
             }

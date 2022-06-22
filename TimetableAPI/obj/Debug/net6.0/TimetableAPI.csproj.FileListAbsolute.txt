@@ -80,3 +80,12 @@ C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI
 C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\obj\Debug\net6.0\ref\TimetableAPI.dll
 C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
 R:\Документы\GIT\#Диплом\TimetableBackend\TimetableAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\bin\Debug\net6.0\ЫЫЫЫ\schedulerGroupsData.json
+C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\bin\Debug\net6.0\ЫЫЫЫ\shedulerData02.05.22_08.05.22.json
+C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\bin\Debug\net6.0\ЫЫЫЫ\shedulerData06.06.22_12.06.22.json
+C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\bin\Debug\net6.0\ЫЫЫЫ\shedulerData09.05.22_15.05.22.json
+C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\bin\Debug\net6.0\ЫЫЫЫ\shedulerData13.06.22_19.06.22.json
+C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\bin\Debug\net6.0\ЫЫЫЫ\shedulerData16.05.22_22.05.22.json
+C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\bin\Debug\net6.0\ЫЫЫЫ\shedulerData20.06.22_26.06.22.json
+C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\bin\Debug\net6.0\ЫЫЫЫ\shedulerData23.05.22_29.05.22.json
+C:\Users\Суслан\Documents\GitHub\LazyProject\TimetableBackend\TimetableAPI\bin\Debug\net6.0\ЫЫЫЫ\shedulerData30.05.22_05.06.22.json
